@@ -88,6 +88,8 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
 
 ## Class Diagram
 
+![Class Diagram Image](/ClassDiagram.png)
+
 ```diff
 - add class diagram here
 ```
