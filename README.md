@@ -17,9 +17,7 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
 
 ## Storyboard
 
-```diff
-- add storyboard here
-```
+![Storyboard](/Storyboard.png)
 
 ## Functional Requirements
 
@@ -82,17 +80,9 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
   **When** I click "-" icon next to item,  
   **Then** item is removed from list
 
-```diff
-- add more scenarios here
-```
-
 ## Class Diagram
 
 ![Class Diagram Image](/ClassDiagram.png)
-
-```diff
-- add class diagram here
-```
 
 ## Scrum Board / Product Backlog
 https://github.com/orgs/OneList/projects/16
