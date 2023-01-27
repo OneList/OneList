@@ -92,19 +92,18 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
 - add class diagram here
 ```
 
-## Scrum Roles
+## Scrum Board / Product Backlog
+https://github.com/orgs/OneList/projects/16
 
-```diff
-- set scrum roles here:
-```
+## Scrum Roles
 
 | Role | Group Member |
 |-|-|
-|  | Tony Gentile |
-|  | Ryan Durham |
-|  | Logan Arnett |
-|  | Justin Tracy |
-|  | Nathan Kraft |
+| Product Owner | Tony Gentile |
+| Development Team Member | Ryan Durham |
+| Development Team Member | Logan Arnett |
+| Scrum Master | Justin Tracy |
+| Development Team Member | Nathan Kraft |
 
 ## Standup
 
