@@ -1,7 +1,7 @@
 <h1 align="center">OneList</h1>
 
 
-Design Document  
+###Design Document  
 
 Tony Gentile, Ryan Durham, Logan Arnett, Justin Tracy, Nathan Kraft
 
