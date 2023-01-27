@@ -58,6 +58,29 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
 > **Given** list items checked off,  
   **When** remove items button is clicked,  
   **Then** Items are moved to a list of purchased Items
+  
+  ### Scenario 3
+
+**As a** member of a household
+**I want** to be able to add items to a grocery list 
+**So that**  I can get my groceries when someone in the household goes shopping 
+
+#### Examples
+
+##### 3.1
+> **Given** I have a group grocery list,  
+  **When** enter in item name, item description(optional), click "+" icon,  
+  **Then** grocery item added to list
+
+##### 3.2
+> **Given** item form has appeared,  
+  **When** remove items button is clicked,  
+  **Then** Items are moved to a list of purchased Items
+  
+ ##### 3.3
+> **Given** I have a populated grocery list,  
+  **When** I click "-" icon next to item,  
+  **Then** item is removed from list
 
 ```diff
 - add more scenarios here
