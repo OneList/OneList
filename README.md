@@ -109,6 +109,4 @@ https://github.com/orgs/OneList/projects/16
 
 ## Standup
 
-```diff
-- Add weekly standup time here:
-```
+### Saturday's at 3:00pm
