@@ -23,25 +23,30 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
 
 ### Scenario 1
 
-**As a** member of a family,  
-**I want** to be able to add or remove items from a grocery list,  
+**As a** member of a household,  
+**I want** to be able to add and remove items from a grocery list,  
 **So that** family members can know what I need.
 
 #### Examples
 
 ##### 1.1
-> **Given** a grocery list is setup,  
-  **When** I add apples to the list  
-  **Then** apples are listed on the grocery list
+> **Given** a grocery list is setup
+  **When** I click the add button
+  **Then** a form appears with text fields to enter data about the item
 
 ##### 2.1
-> **Given** a grocery list is setup  
-  **When** I remove apples from the list  
-  **Then** Apples are no longer in the list
+> **Given** item entry form has appeared
+  **When** I enter apple information into the text fields, and click add button
+  **Then** apples are added to the grocey list
+
+##### 3.1
+> **Given** a grocery list is populated with an itme
+  **When** I click the remove button on the item
+  **Then** the item is removed from the grocery list
   
 ### Scenario 2
 
-**As a** member of a family,  
+**As a** member of a household,  
 **I want** to be able to check off items from a grocery list,  
 **So that** family members know what has been purchased.
 
@@ -56,29 +61,6 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
 > **Given** list items checked off,  
   **When** remove items button is clicked,  
   **Then** Items are moved to a list of purchased Items
-  
-  ### Scenario 3
-
-**As a** member of a household
-**I want** to be able to add items to a grocery list 
-**So that**  I can get my groceries when someone in the household goes shopping 
-
-#### Examples
-
-##### 3.1
-> **Given** I have a group grocery list,  
-  **When** enter in item name, item description(optional), click "+" icon,  
-  **Then** grocery item added to list
-
-##### 3.2
-> **Given** item form has appeared,  
-  **When** remove items button is clicked,  
-  **Then** Items are moved to a list of purchased Items
-  
- ##### 3.3
-> **Given** I have a populated grocery list,  
-  **When** I click "-" icon next to item,  
-  **Then** item is removed from list
 
 ## Class Diagram
 
