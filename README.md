@@ -37,12 +37,12 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
 ##### 1.2
 > **Given** item entry form has appeared,  
   **When** I enter apple information into the text fields, and click add button,  
-  **Then** apples are added to the grocey list
+  **Then** apples are added to the grocery list
 
 ##### 1.3
-> **Given** a grocery list is populated with an itme,  
-  **When** I click the remove button on the item,  
-  **Then** the item is removed from the grocery list
+> **Given** a grocery list contains apples,  
+  **When** I click the remove button on the apples,  
+  **Then** there is no longer apples on the grocery list
   
 ### Scenario 2
 
