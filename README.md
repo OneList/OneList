@@ -30,18 +30,18 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
 #### Examples
 
 ##### 1.1
-> **Given** a grocery list is setup,
-  **When** I click the add button,
+> **Given** a grocery list is setup,  
+  **When** I click the add button,  
   **Then** a form appears with text fields to enter data about the item
 
 ##### 2.1
-> **Given** item entry form has appeared,
-  **When** I enter apple information into the text fields, and click add button,
-  **Then** apples are added to the grocey list
+> **Given** item entry form has appeared,  
+  **When** I enter apple information into the text fields, and click add button,  
+  **Then** apples are added to the grocery list
 
 ##### 3.1
-> **Given** a grocery list is populated with an itme,
-  **When** I click the remove button on the item,
+> **Given** a grocery list is populated with an item,  
+  **When** I click the remove button on the item,  
   **Then** the item is removed from the grocery list
   
 ### Scenario 2
@@ -94,4 +94,4 @@ https://github.com/orgs/OneList/projects/16
 
 ## Standup
 
-### Saturday's at 3:00pm
+### Saturdays at 3:00pm
