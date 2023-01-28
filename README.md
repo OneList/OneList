@@ -30,19 +30,19 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
 #### Examples
 
 ##### 1.1
-> **Given** a grocery list is setup,  
-  **When** I click the add button,  
+> **Given** a grocery list is setup,
+  **When** I click the add button,
   **Then** a form appears with text fields to enter data about the item
 
-##### 1.2
-> **Given** item entry form has appeared,  
-  **When** I enter apple information into the text fields, and click add button,  
-  **Then** apples are added to the grocery list
+##### 2.1
+> **Given** item entry form has appeared,
+  **When** I enter apple information into the text fields, and click add button,
+  **Then** apples are added to the grocey list
 
-##### 1.3
-> **Given** a grocery list contains apples,  
-  **When** I click the remove button on the apples,  
-  **Then** there is no longer apples on the grocery list
+##### 3.1
+> **Given** a grocery list is populated with an itme,
+  **When** I click the remove button on the item,
+  **Then** the item is removed from the grocery list
   
 ### Scenario 2
 
@@ -66,6 +66,19 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
 
 ![Class Diagram Image](/ClassDiagram.png)
 
+## Class Diagram
+
+##### -MainActivity: The first screen the user sees. There will be all the lists the users is apart of on this screen, as well as a button to create new ones.
+##### -RetrofitInstance: Required class for Retrofit.
+##### -List: Stores all items added to list, in addtion to all users that are on the list.
+##### -User: The users that will belong to a list.
+##### -Item: Items that will populate the list.
+##### -Category: Referenced by items to further sort them (i.e. Food, Pharmaceutical, etc...).
+##### -IListDAO: Interface to store lists users are part of.
+##### -IUserDAO: Interface to store all users.
+##### -IITemDAO: Interface to store various items that can be added to lists.
+##### -ICategoryDAO: Interface to store all categories items can be a part of.
+
 ## Scrum Board / Product Backlog
 https://github.com/orgs/OneList/projects/16
 
@@ -81,4 +94,4 @@ https://github.com/orgs/OneList/projects/16
 
 ## Standup
 
-### Saturdays at 3:00pm
+### Saturday's at 3:00pm
