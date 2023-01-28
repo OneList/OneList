@@ -66,18 +66,18 @@ Never forget your shopping lists again, ensure nobody is forgotten when buying f
 
 ![Class Diagram Image](/ClassDiagram.png)
 
-## Class Diagram
+## Class Diagram Description
 
-##### -MainActivity: The first screen the user sees. There will be all the lists the users is apart of on this screen, as well as a button to create new ones.
-##### -RetrofitInstance: Required class for Retrofit.
-##### -List: Stores all items added to list, in addtion to all users that are on the list.
-##### -User: The users that will belong to a list.
-##### -Item: Items that will populate the list.
-##### -Category: Referenced by items to further sort them (i.e. Food, Pharmaceutical, etc...).
-##### -IListDAO: Interface to store lists users are part of.
-##### -IUserDAO: Interface to store all users.
-##### -IITemDAO: Interface to store various items that can be added to lists.
-##### -ICategoryDAO: Interface to store all categories items can be a part of.
+##### MainActivity: The first screen the user sees. There will be all the lists the users is apart of on this screen, as well as a button to create new ones.
+##### RetrofitInstance: Required class for Retrofit.
+##### List: Stores all items added to list, in addtion to all users that are on the list.
+##### User: The users that will belong to a list.
+##### Item: Items that will populate the list.
+##### Category: Referenced by items to further sort them (i.e. Food, Pharmaceutical, etc...).
+##### IListDAO: Interface to store lists users are part of.
+##### IUserDAO: Interface to store all users.
+##### IITemDAO: Interface to store various items that can be added to lists.
+##### ICategoryDAO: Interface to store all categories items can be a part of.
 
 ## Scrum Board / Product Backlog
 https://github.com/orgs/OneList/projects/16
