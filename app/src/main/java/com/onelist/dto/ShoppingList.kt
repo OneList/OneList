@@ -1,8 +1,8 @@
 package com.onelist.dto
-
 import kotlin.collections.List
 
-class ShoppingList {
+data class ShoppingList(var listID: Int, var name: String) {
+
     //list holds Items which are strings
     private val stringList = mutableListOf<String>()
 
