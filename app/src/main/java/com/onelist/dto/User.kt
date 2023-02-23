@@ -7,6 +7,6 @@ data class User(val userID: Int, var firstName: String, val lastName: String, va
     }
 
     override fun toString(): String {
-        return "$userID $firstName $lastName $email";
+        return "$userID - $firstName $lastName ($email)"
     }
 }
