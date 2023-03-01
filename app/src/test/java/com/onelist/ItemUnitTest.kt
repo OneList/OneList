@@ -15,14 +15,14 @@ class ItemUnitTest {
     var rule: TestRule = InstantTaskExecutorRule()
 
     lateinit var itemService: ItemService
-    var allBuildings: List<Item>? = ArrayList<Item>()
+    var allItems: List<Item>? = ArrayList<Item>()
 
     @Test
     fun `Given item data is available when I search for ramen then I should receive ramen`() =
         runTest {
             givenItemServiceIsInitialized()
             whenItemDataIsReadAndParsed()
-            thenItemCollectionShouldContainTeacherDyer()
+            thenItemCollectionShouldContainRamen()
         }
 
     private fun givenItemServiceIsInitialized() {
@@ -30,14 +30,14 @@ class ItemUnitTest {
     }
 
     private suspend fun whenItemDataIsReadAndParsed() {
-        allBuildings = itemService.fetchItems()
+        allItems = itemService.fetchItems()
     }
 
-    private fun thenItemCollectionShouldContainTeacherDyer() {
-        assertNotNull(allBuildings)
-        assertTrue(allBuildings!!.isNotEmpty())
+    private fun thenItemCollectionShouldContainRamen() {
+        assertNotNull(allItems)
+        assertTrue(allItems!!.isNotEmpty())
         var containsRamen = false
-        allBuildings!!.forEach {
+        allItems!!.forEach {
             if (it.name.equals("ramen")) {
                 containsRamen = true
             }
