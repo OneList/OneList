@@ -1,0 +1,42 @@
+[
+	{
+	"id":"1",
+	"name":"bread"
+	},
+	{
+	"id":"2",
+	"buildingName":"ramen"
+	},
+	{
+	"id":"3",
+	"buildingName":"peanut butter"
+	},
+	{
+	"id":"4",
+	"buildingName":"eggs"
+	},
+	{
+	"id":"5",
+	"buildingName":"salt"
+	},
+	{
+	"id":"6",
+	"buildingName":"pepper"
+	},
+	{
+	"id":"7",
+	"buildingName":"chicken"
+	},
+	{
+	"id":"8",
+	"buildingName":"lettuce"
+	},
+	{
+	"id":"9",
+	"buildingName":"ranch dressing"
+	},
+	{
+	"id":"10",
+	"buildingName":"beer"
+	}
+]

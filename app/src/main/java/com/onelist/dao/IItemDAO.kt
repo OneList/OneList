@@ -6,6 +6,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface IItemDAO {
-    @GET("") //TODO: add rest of retrofit link for items
+    //TODO: change link to main branch once merged
+    @GET("/OneList/OneList/main/iByrd_CodeReview/ItemsJSON.txt ")
     fun getAllItems() : Call<ArrayList<Item>>
 }
