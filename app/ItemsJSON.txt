@@ -5,38 +5,38 @@
 	},
 	{
 	"id":"2",
-	"buildingName":"ramen"
+	"name":"ramen"
 	},
 	{
 	"id":"3",
-	"buildingName":"peanut butter"
+	"name":"peanut butter"
 	},
 	{
 	"id":"4",
-	"buildingName":"eggs"
+	"name":"eggs"
 	},
 	{
 	"id":"5",
-	"buildingName":"salt"
+	"name":"salt"
 	},
 	{
 	"id":"6",
-	"buildingName":"pepper"
+	"name":"pepper"
 	},
 	{
 	"id":"7",
-	"buildingName":"chicken"
+	"name":"chicken"
 	},
 	{
 	"id":"8",
-	"buildingName":"lettuce"
+	"name":"lettuce"
 	},
 	{
 	"id":"9",
-	"buildingName":"ranch dressing"
+	"name":"ranch dressing"
 	},
 	{
 	"id":"10",
-	"buildingName":"beer"
+	"name":"beer"
 	}
 ]
