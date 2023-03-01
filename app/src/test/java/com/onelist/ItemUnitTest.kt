@@ -7,7 +7,7 @@ import org.junit.Test
 class ItemUnitTest {
 
     @Test
-    fun itemToString() {
+    fun `toString returns "1 - Test (1)" when itemID = 1, categoryID = 1, name = "Test", & quantity = 1`() {
         val item = Item(1, "Test", 1, 1)
         assertEquals("1 - Test (1)", item.toString())
     }
