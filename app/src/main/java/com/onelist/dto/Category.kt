@@ -8,7 +8,7 @@ package com.onelist.dto
  */
 data class Category(val categoryId: Int, var name: String) {
     /**
-     * returns a string representation of the category class in specific format
+     *@return a string representation of the category class in specific format
      */
     override fun toString(): String {
         return "$categoryId - $name"
