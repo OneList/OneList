@@ -1,8 +1,8 @@
 package com.onelist.dto
 
-data class Item(var itemID: Int, var name: String, var categoryID: Int, var quantity : Int) {
+data class Item(var itemId: Int, var name: String, var categoryId: Int, var quantity : Int) {
 
     override fun toString(): String {
-        return "$itemID - $name ($quantity)"
+        return "$itemId - $name ($quantity)"
     }
 }
