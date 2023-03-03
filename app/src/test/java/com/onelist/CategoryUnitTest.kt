@@ -16,7 +16,7 @@ class CategoryUnitTest {
     @Test
     fun `given a category dto when categoryID is 2 and name is Bathroom then categoryID is 2 and name is Bathroom`() {
         var category = Category(2, "Bathroom")
-        assertTrue(category.categoryID.equals(2))
-        assertTrue(category.name.equals("Bathroom"))
+        assertTrue(category.categoryID == 2)
+        assertTrue(category.name == "Bathroom")
     }
 }
