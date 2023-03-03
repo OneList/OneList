@@ -1,4 +1,3 @@
 package com.onelist.service
 
-class UserService {
-}
+class UserService {}
