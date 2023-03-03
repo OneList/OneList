@@ -8,11 +8,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
 
-interface IItemService {
-    //TODO: Create the Interface for the Item Service
-
-    //TODO: Create the method to get all the items
-}
+interface IItemService {}
 
 class ItemService : IItemService {
     suspend fun fetchItems(): List<Item>? {
