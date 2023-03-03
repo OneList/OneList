@@ -1,4 +1,4 @@
-package com.onelist
+package com.onelist.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.onelist.R
 import com.onelist.databinding.FragmentFirstBinding
 
 class FirstFragment : Fragment() {
