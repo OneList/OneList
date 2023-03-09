@@ -19,9 +19,10 @@ private val LightColorPalette = lightColors(
     secondary = Rose,
     background = Snow,
     surface = Snow,
-    onSurface = Ebony,
-    onSecondary = Ebony,
-    onBackground = Ebony,
+    onPrimary = Snow,
+    onSurface = DarkGreen,
+    onSecondary = DarkGreen,
+    onBackground = DarkGreen,
 
     /* Other default colors to override
     background = Color.White,
