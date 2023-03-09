@@ -18,3 +18,5 @@ val Snow = Color(0xFFF9F3F1) //Background Color
 val Rose = Color(0xFFFE5F55) //Accent Color
 
 //Custom Dark Mode Colors
+val JetBlack = Color(0xFF21262D) //Primary Color
+val EerieBlack = Color(0xFF161B22) //Background Color
