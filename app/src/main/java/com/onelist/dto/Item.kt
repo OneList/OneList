@@ -1,5 +1,7 @@
 package com.onelist.dto
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Class to hold item data
  *
@@ -9,7 +11,7 @@ package com.onelist.dto
  * @property quantity the quantity of the item
  * @constructor Creates an item with ID, name, category ID, and quantity
  */
-data class Item(var itemID: Int, var name: String, var categoryID: Int, var quantity : Int) {
+data class Item(@SerializedName("id") var itemID: Int, var name: String, var categoryID: Int, var quantity : Int) {
 
     override fun toString(): String {
         return "$itemID - $name ($quantity)"
