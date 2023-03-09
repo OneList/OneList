@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,20 +22,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             OneListTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    ItemName("Android")
-                }
+                ListView()
             }
         }
     }
 }
 
 @Composable
-fun ItemName(name: String) {
+fun ItemName(name: String) { //Example Form
+    //TODO Will be replaced with a list of items
     var itemName by remember { mutableStateOf("") }
     var quantity by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
@@ -74,10 +70,56 @@ fun ItemName(name: String) {
     }
 }
 
-@Preview(showBackground = true)
+@Composable
+fun ListView() { //Main Shopping List View
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "OneList") },
+                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = MaterialTheme.colors.onPrimary,
+                navigationIcon = {
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Filled.ArrowBack, "backIcon")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {/* Do Something*/ }) {
+                        Icon(Icons.Filled.Settings, null, tint = MaterialTheme.colors.onPrimary)
+                    }
+                }
+            )
+
+        },
+        content = {paddingValues ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .fillMaxWidth()
+            ) {
+                ItemName("Android")
+            }
+        }
+    )
+}
+
+@Preview(showBackground = true, name = "test", device = "spec:width=411dp,height=891dp", showSystemUi = true )
 @Composable
 fun DefaultPreview() {
     OneListTheme {
-        ItemName("Android")
+        ListView()
+    }
+}
+
+@Preview(showBackground = true, name = "test", device = "spec:width=411dp,height=891dp", showSystemUi = true )
+@Composable
+fun DarkPreview() {
+    OneListTheme(darkTheme = true) {
+        ListView()
     }
 }

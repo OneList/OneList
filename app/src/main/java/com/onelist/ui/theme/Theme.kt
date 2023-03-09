@@ -1,6 +1,5 @@
 package com.onelist.ui.theme
 
-import android.graphics.Color
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -9,17 +8,27 @@ import androidx.compose.runtime.Composable
 
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = JetBlack,
+    primaryVariant = LightGreen,
+    secondary = MainGreen,
+    background = EerieBlack,
+    surface = EerieBlack,
+    onPrimary = Snow,
+    onSurface = Snow,
+    onSecondary = Snow,
+    onBackground = Snow,
 )
 
 private val LightColorPalette = lightColors(
-    primary = Black,
-    primaryVariant = Purple200,
-    secondary = White,
-    background = White,
-    surface = White
+    primary = MainGreen,
+    primaryVariant = LightGreen,
+    secondary = Rose,
+    background = Snow,
+    surface = Snow,
+    onPrimary = Snow,
+    onSurface = DarkGreen,
+    onSecondary = DarkGreen,
+    onBackground = DarkGreen,
 
     /* Other default colors to override
     background = Color.White,
