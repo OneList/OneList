@@ -11,8 +11,8 @@ val Black = Color( 0xFF000000)
 val White = Color(0xFFFFFFFF)
 
 //Custom Colors
-val Ebony = Color(0x4E5340) //Darker Color
-val MainGreen = Color(0x4F9C44) //Primary Color
-val LightGreen = Color(0x95CD8E) //Secondary Color
-val Beige = Color(0xF3F9E3) //Background Color
-val Rose = Color(0xFE5F55) //Accent Color
+val Ebony = Color(0xFF4E5340) //Darker Color
+val MainGreen = Color(0xFF488E3E) //Primary Color
+val LightGreen = Color(0xFF95CD8E) //Secondary Color
+val Snow = Color(0xFFF9F3F1) //Background Color
+val Rose = Color(0xFFFE5F55) //Accent Color
