@@ -6,13 +6,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ import com.onelist.R
 import com.onelist.ui.theme.OneListTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -79,8 +81,14 @@ fun ItemName() { //Example Form
 }
 
 @Composable
-fun ItemRow(name: String){
+fun ItemRow(name: String) {
     //TODO Will be the container for a single item
+
+    //var itemName by remember { mutableStateOf("") }
+    //var quantity by remember { mutableStateOf("") }
+    //var category by remember { mutableStateOf("") }
+    //val context = LocalContext.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -89,29 +97,66 @@ fun ItemRow(name: String){
                 bottom = 1.dp
             )
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(1.dp, MaterialTheme.colors.onBackground)
-        ) {
+        Column {
             Text(text = name, fontSize = 20.sp, fontWeight = FontWeight.W700, modifier = Modifier.padding(2.dp)) //Name
-            Text(text = "Quantity", modifier = Modifier.padding(2.dp)) //Quantity
+            Text(text = "Qty: 1", modifier = Modifier.padding(2.dp)) //Quantity
 
         }
+        Row(modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End) {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Filled.Done,
+                    contentDescription = "Mark as Purchased",
+                    tint = MaterialTheme.colors.onBackground
+                )
+            }
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Filled.MoreVert,
+                    contentDescription = "Edit Item",
+                    tint = MaterialTheme.colors.onBackground
+                )
+            }
+        }
     }
+    Divider (
+        color = MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
+        modifier = Modifier
+            .height(1.dp)
+            .fillMaxHeight()
+            .fillMaxWidth()
+    )
 }
 
 @Composable
 fun CategoryHeader(name: String){
     //TODO Header for each category
+    Divider (
+        color = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .height(1.dp)
+            .fillMaxHeight()
+            .fillMaxWidth()
+    )
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = MaterialTheme.colors.secondary)
-            .border(1.dp, MaterialTheme.colors.onBackground)
+            .background(color = MaterialTheme.colors.primaryVariant)
     ){
-        Text(text = name, fontSize = 20.sp, fontWeight = FontWeight.W700, color = MaterialTheme.colors.onPrimary,modifier = Modifier.padding(2.dp))
+        Text(text = name,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.W700,
+            color = MaterialTheme.colors.onBackground,
+            modifier = Modifier.padding(2.dp))
     }
+    Divider (
+        color = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .height(1.dp)
+            .fillMaxHeight()
+            .fillMaxWidth()
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -139,11 +184,12 @@ fun ListView() { //Main Shopping List View
                 title = { Text(text = "OneList") },
                 backgroundColor = MaterialTheme.colors.primary,
                 contentColor = MaterialTheme.colors.onPrimary,
-                navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Filled.ArrowBack, "backIcon")
-                    }
-                },
+//                navigationIcon = {
+//                    IconButton(onClick = {}) {
+//                        Icon(Icons.Filled.ArrowBack, "backIcon")
+//                    }
+//                },
+                elevation = 0.dp,
                 actions = {
                     IconButton(onClick = {/* Do Something*/ }) {
                         Icon(Icons.Filled.Settings, null, tint = MaterialTheme.colors.onPrimary)
@@ -165,6 +211,17 @@ fun ListView() { //Main Shopping List View
             ) {
                 ItemList()
             }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /*TODO*/ },
+                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = MaterialTheme.colors.onPrimary,
+                modifier = Modifier.size(80.dp)
+            ) {
+                Text(text = "+",
+                    fontSize = 52.sp)
+            }
+
         }
     )
 }
