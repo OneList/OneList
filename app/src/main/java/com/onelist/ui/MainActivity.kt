@@ -4,20 +4,30 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.onelist.R
 import com.onelist.ui.theme.OneListTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -29,7 +39,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ItemName(name: String) { //Example Form
+fun ItemName() { //Example Form
     //TODO Will be replaced with a list of items
     var itemName by remember { mutableStateOf("") }
     var quantity by remember { mutableStateOf("") }
@@ -71,6 +81,102 @@ fun ItemName(name: String) { //Example Form
 }
 
 @Composable
+fun ItemRow(name: String) {
+    //TODO Will be the container for a single item
+
+    //var itemName by remember { mutableStateOf("") }
+    //var quantity by remember { mutableStateOf("") }
+    //var category by remember { mutableStateOf("") }
+    //val context = LocalContext.current
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = 1.dp,
+                bottom = 1.dp
+            )
+    ) {
+        Column {
+            Text(text = name, fontSize = 20.sp, fontWeight = FontWeight.W700, modifier = Modifier.padding(2.dp)) //Name
+            Text(text = "Qty: 1", modifier = Modifier.padding(2.dp)) //Quantity
+
+        }
+        Row(modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End) {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Filled.Done,
+                    contentDescription = "Mark as Purchased",
+                    tint = MaterialTheme.colors.onBackground
+                )
+            }
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Filled.MoreVert,
+                    contentDescription = "Edit Item",
+                    tint = MaterialTheme.colors.onBackground
+                )
+            }
+        }
+    }
+    Divider (
+        color = MaterialTheme.colors.onBackground.copy(alpha = 0.3f),
+        modifier = Modifier
+            .height(1.dp)
+            .fillMaxHeight()
+            .fillMaxWidth()
+    )
+}
+
+@Composable
+fun CategoryHeader(name: String){
+    //TODO Header for each category
+    Divider (
+        color = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .height(1.dp)
+            .fillMaxHeight()
+            .fillMaxWidth()
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = MaterialTheme.colors.primaryVariant)
+    ){
+        Text(text = name,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.W700,
+            color = MaterialTheme.colors.onBackground,
+            modifier = Modifier.padding(2.dp))
+    }
+    Divider (
+        color = MaterialTheme.colors.onBackground,
+        modifier = Modifier
+            .height(1.dp)
+            .fillMaxHeight()
+            .fillMaxWidth()
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ItemList() { //Example List
+    //TODO Will be replaced with a list of items
+    val listItems = listOf("Bread", "Cheddar Cheese", "Apples", "Toilet Paper", "Hand Soap")
+    LazyColumn {
+        stickyHeader {
+            //TODO Make separate function for header
+            CategoryHeader("Test Header")
+        }
+
+        items(listItems) { item ->
+            ItemRow(item)
+        }
+    }
+}
+
+@Composable
 fun ListView() { //Main Shopping List View
     Scaffold(
         topBar = {
@@ -78,11 +184,12 @@ fun ListView() { //Main Shopping List View
                 title = { Text(text = "OneList") },
                 backgroundColor = MaterialTheme.colors.primary,
                 contentColor = MaterialTheme.colors.onPrimary,
-                navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Filled.ArrowBack, "backIcon")
-                    }
-                },
+//                navigationIcon = {
+//                    IconButton(onClick = {}) {
+//                        Icon(Icons.Filled.ArrowBack, "backIcon")
+//                    }
+//                },
+                elevation = 0.dp,
                 actions = {
                     IconButton(onClick = {/* Do Something*/ }) {
                         Icon(Icons.Filled.Settings, null, tint = MaterialTheme.colors.onPrimary)
@@ -102,8 +209,19 @@ fun ListView() { //Main Shopping List View
                     .fillMaxSize()
                     .fillMaxWidth()
             ) {
-                ItemName("Android")
+                ItemList()
             }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /*TODO*/ },
+                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = MaterialTheme.colors.onPrimary,
+                modifier = Modifier.size(80.dp)
+            ) {
+                Text(text = "+",
+                    fontSize = 52.sp)
+            }
+
         }
     )
 }
