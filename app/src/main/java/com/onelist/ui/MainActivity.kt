@@ -4,7 +4,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -13,7 +18,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.onelist.R
 import com.onelist.ui.theme.OneListTheme
 
@@ -29,7 +37,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ItemName(name: String) { //Example Form
+fun ItemName() { //Example Form
     //TODO Will be replaced with a list of items
     var itemName by remember { mutableStateOf("") }
     var quantity by remember { mutableStateOf("") }
@@ -71,6 +79,59 @@ fun ItemName(name: String) { //Example Form
 }
 
 @Composable
+fun ItemRow(name: String){
+    //TODO Will be the container for a single item
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = 1.dp,
+                bottom = 1.dp
+            )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, MaterialTheme.colors.onBackground)
+        ) {
+            Text(text = name, fontSize = 20.sp, fontWeight = FontWeight.W700, modifier = Modifier.padding(2.dp)) //Name
+            Text(text = "Quantity", modifier = Modifier.padding(2.dp)) //Quantity
+
+        }
+    }
+}
+
+@Composable
+fun CategoryHeader(name: String){
+    //TODO Header for each category
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = MaterialTheme.colors.secondary)
+            .border(1.dp, MaterialTheme.colors.onBackground)
+    ){
+        Text(text = name, fontSize = 20.sp, fontWeight = FontWeight.W700, color = MaterialTheme.colors.onPrimary,modifier = Modifier.padding(2.dp))
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ItemList() { //Example List
+    //TODO Will be replaced with a list of items
+    val listItems = listOf("Bread", "Cheddar Cheese", "Apples", "Toilet Paper", "Hand Soap")
+    LazyColumn {
+        stickyHeader {
+            //TODO Make separate function for header
+            CategoryHeader("Test Header")
+        }
+
+        items(listItems) { item ->
+            ItemRow(item)
+        }
+    }
+}
+
+@Composable
 fun ListView() { //Main Shopping List View
     Scaffold(
         topBar = {
@@ -102,7 +163,7 @@ fun ListView() { //Main Shopping List View
                     .fillMaxSize()
                     .fillMaxWidth()
             ) {
-                ItemName("Android")
+                ItemList()
             }
         }
     )
