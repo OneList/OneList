@@ -91,7 +91,8 @@ class MainActivity : ComponentActivity() {
                 Text(text = "Submit")
             }
 
-            Button (
+            Button(
+                modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     signIn()
                 }
