@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun ItemRow(name: String) {
+    private fun ItemRow(name: String) {
         //TODO Will be the container for a single item
 
         //var itemName by remember { mutableStateOf("") }
@@ -141,7 +141,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun CategoryHeader(name: String) {
+    private fun CategoryHeader(name: String) {
         //TODO Header for each category
         Divider(
             color = MaterialTheme.colors.onBackground,
