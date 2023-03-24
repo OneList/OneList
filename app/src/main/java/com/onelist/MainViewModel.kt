@@ -12,7 +12,9 @@ import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     var items : MutableLiveData<List<Item>> = MutableLiveData<List<Item>>()
+    var shoppingLists : MutableLiveData<List<ShoppingList>> = MutableLiveData<List<ShoppingList>>()
     var itemService : ItemService = ItemService()
+    var shoppingListService : ShoppingListService = ShoppingListService()
 
     private lateinit var firestore : FirebaseFirestore
 
@@ -25,6 +27,13 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             var innerItems = itemService.fetchItems()
             items.postValue(innerItems)
+        }
+    }
+
+    fun fetchShoppingLists() {
+        viewModelScope.launch {
+            var results = shoppingListService.getShoppingLists()
+            shoppingLists.postValue(results)
         }
     }
 
