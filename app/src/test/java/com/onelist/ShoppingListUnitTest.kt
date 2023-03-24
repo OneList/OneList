@@ -8,7 +8,7 @@ class ShoppingListUnitTest {
 
     @Test
     fun shoppingListToString() {
-        val shoppingList = ShoppingList(1, "My List", 4)
+        val shoppingList = ShoppingList("1", "My List", listOf("4"), listOf("1", "2"))
         assertEquals("1 - My List (4)", shoppingList.toString())
     }
 }

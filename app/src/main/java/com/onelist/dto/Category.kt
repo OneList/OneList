@@ -7,7 +7,7 @@ package com.onelist.dto
  * @property name the name of the category
  * @constructor Creates a category with ID and name
  */
-data class Category(val categoryID: Int, var name: String) {
+data class Category(var categoryID: String, var name: String) {
 
     override fun toString(): String {
         return "$categoryID - $name"
