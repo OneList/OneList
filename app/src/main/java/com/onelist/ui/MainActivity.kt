@@ -90,6 +90,15 @@ class MainActivity : ComponentActivity() {
             {
                 Text(text = "Submit")
             }
+
+            Button (
+                onClick = {
+                    signIn()
+                }
+                    ){
+
+                Text(text = "Sign In")
+            }
         }
     }
 
@@ -272,13 +281,13 @@ class MainActivity : ComponentActivity() {
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build()
         )
-        val signinIntent = AuthUI.getInstance()
+        val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .build()
 
         if (FirebaseAuth.getInstance().currentUser == null) {
-            signInLauncher.launch(signinIntent)
+            signInLauncher.launch(signInIntent)
         } else {
             // User is already signed in
         }
