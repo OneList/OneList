@@ -1,6 +1,7 @@
 package com.onelist.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,14 +23,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.onelist.MainViewModel
 import com.onelist.R
+import com.onelist.dto.Item
+import com.onelist.dto.User
 import com.onelist.ui.theme.OneListTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModelThing: MainViewModel by viewModel<MainViewModel>()
+    private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+    private val viewModel: MainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -253,6 +263,46 @@ class MainActivity : ComponentActivity() {
     fun DarkPreview() {
         OneListTheme(darkTheme = true) {
             ListView()
+        }
+    }
+
+
+    private fun signIn() {
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build()
+        )
+        val signinIntent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .build()
+
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            signInLauncher.launch(signinIntent)
+        } else {
+            // User is already signed in
+        }
+    }
+
+    private val signInLauncher = registerForActivityResult (
+        FirebaseAuthUIActivityResultContract()
+    ) { result ->
+        signInResult(result)
+    }
+
+
+    private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
+        val response = result.idpResponse
+        if (result.resultCode == RESULT_OK) {
+            firebaseUser = FirebaseAuth.getInstance().currentUser
+            firebaseUser?.let {
+                val user = User(it.uid, it.displayName!!)
+                viewModel.user = user
+                viewModel.saveUser(user)
+            }
+        } else {
+            val error = response?.error?.errorCode ?: "unknown error"
+            Log.e("MainActivity.kt", "Error logging in: $error")
         }
     }
 }
