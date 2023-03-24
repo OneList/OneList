@@ -293,7 +293,7 @@ class MainActivity : ComponentActivity() {
 
     private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
-        if (result.resultCode == ComponentActivity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             firebaseUser = FirebaseAuth.getInstance().currentUser
             firebaseUser?.let {
                 val user = User(it.uid, it.displayName!!)
