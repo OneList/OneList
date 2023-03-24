@@ -11,6 +11,7 @@ import retrofit2.awaitResponse
 interface IItemService {
     suspend fun fetchItems(): List<Item>?
 }
+
 class ItemService : IItemService {
         override suspend fun fetchItems(): List<Item>? {
         return withContext(Dispatchers.IO) {
