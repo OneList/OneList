@@ -40,18 +40,6 @@ class MainViewModel : ViewModel() {
         handle.addOnFailureListener { Log.d("Firebase", "Item save failed $it") }
     }
 
-    fun saveLineItem(lineItem: LineItem) {
-        val document = if (lineItem.lineItemID.isEmpty()) {
-            firestore.collection("lineItems").document()
-        } else {
-            firestore.collection("lineItems").document(lineItem.lineItemID)
-        }
-        lineItem.lineItemID = document.id
-        val handle = document.set(lineItem)
-        handle.addOnSuccessListener { Log.d("Firebase", "Line Item Saved") }
-        handle.addOnFailureListener { Log.d("Firebase", "Line item save failed $it") }
-    }
-
     fun saveCategory(category: Category) {
         val document = if (category.categoryID.isEmpty()) {
             firestore.collection("categories").document()
