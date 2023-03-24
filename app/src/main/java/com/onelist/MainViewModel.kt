@@ -8,11 +8,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.onelist.dto.*
 import com.onelist.service.ItemService
+import com.onelist.service.UserService
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     var items : MutableLiveData<List<Item>> = MutableLiveData<List<Item>>()
+    var shoppingLists : MutableLiveData<List<ShoppingList>> = MutableLiveData<List<ShoppingList>>()
     var itemService : ItemService = ItemService()
+    var userService : UserService = UserService()
 
     private lateinit var firestore : FirebaseFirestore
 
@@ -25,6 +28,13 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             var innerItems = itemService.fetchItems()
             items.postValue(innerItems)
+        }
+    }
+
+    fun fetchShoppingLists() {
+        viewModelScope.launch {
+            var results = userService.fetchShoppingLists()
+            shoppingLists.postValue(results)
         }
     }
 

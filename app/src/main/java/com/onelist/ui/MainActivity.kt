@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
@@ -26,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.onelist.MainViewModel
 import com.onelist.R
-import com.onelist.dto.Item
 import com.onelist.ui.theme.OneListTheme
 
 class MainActivity : ComponentActivity() {
@@ -85,7 +83,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun ItemRow(name: String) {
+    private fun ItemRow(name: String) {
         //TODO Will be the container for a single item
 
         //var itemName by remember { mutableStateOf("") }
@@ -141,7 +139,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun CategoryHeader(name: String) {
+    private fun CategoryHeader(name: String) {
         //TODO Header for each category
         Divider(
             color = MaterialTheme.colors.onBackground,
