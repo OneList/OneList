@@ -5,12 +5,12 @@ package com.onelist.dto
  *
  * @property listId the ID of the shopping list the object references
  * @property name the name associated with the shopping list
- * @property userId the ID of of the user associated with the list
+ * @property userIDs the IDs of of the users associated with the list
+ * @property lineItemIDs the IDs of of the line items associated with the list
  * @constructor Creates a shopping list with ID, name, and user ID
  */
-data class ShoppingList(var listID: Int, var name: String, var userID: Int) {
-
+data class ShoppingList(var listID: String, var name: String, var userIDs: List<String>, var lineItemIDs: List<String>) {
     override fun toString(): String {
-        return "$listID - $name ($userID)"
+        return "$listID - $name (${userIDs[0]})"
     }
 }
