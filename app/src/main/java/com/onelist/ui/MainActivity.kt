@@ -277,13 +277,17 @@ class MainActivity : ComponentActivity() {
             .setAvailableProviders(providers)
             .build()
 
-        signInLauncher.launch(signinIntent)
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            signInLauncher.launch(signinIntent)
+        } else {
+            // User is already signed in
+        }
     }
 
     private val signInLauncher = registerForActivityResult (
         FirebaseAuthUIActivityResultContract()
-    ) {
-            res -> this.signInResult(res)
+    ) { result ->
+        signInResult(result)
     }
 
 
@@ -297,7 +301,8 @@ class MainActivity : ComponentActivity() {
                 viewModel.saveUser(user)
             }
         } else {
-            Log.e("MainActivity.kt", "Error logging in " + response?.error?.errorCode)
+            val error = response?.error?.errorCode ?: "unknown error"
+            Log.e("MainActivity.kt", "Error logging in: $error")
         }
     }
 }
