@@ -34,7 +34,6 @@ import com.onelist.R
 import com.onelist.dto.Item
 import com.onelist.dto.User
 import com.onelist.ui.theme.OneListTheme
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -61,19 +60,19 @@ class MainActivity : ComponentActivity() {
             OutlinedTextField(
                 value = itemName,
                 onValueChange = { itemName = it },
-                label = { Text(stringResource(R.string.ItemName)) },
+                label = { Text(stringResource(R.string.item_name)) },
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = quantity,
                 onValueChange = { quantity = it },
-                label = { Text(stringResource(R.string.Quantity)) },
+                label = { Text(stringResource(R.string.quantity)) },
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = category,
                 onValueChange = { category = it },
-                label = { Text(stringResource(R.string.Category)) },
+                label = { Text(stringResource(R.string.category)) },
                 modifier = Modifier.fillMaxWidth()
             )
             Button(
@@ -87,7 +86,7 @@ class MainActivity : ComponentActivity() {
                 }
             )
             {
-                Text(text = "Submit")
+                Text(text = stringResource(id = R.string.submit))
             }
 
             Button(
@@ -97,7 +96,7 @@ class MainActivity : ComponentActivity() {
                 }
                     ){
 
-                Text(text = "Sign In")
+                Text(text = stringResource(id = R.string.sign_in))
             }
         }
     }
@@ -203,7 +202,7 @@ class MainActivity : ComponentActivity() {
         LazyColumn {
             stickyHeader {
                 //TODO Make separate function for header
-                CategoryHeader("Test Header")
+                CategoryHeader(stringResource(id = R.string.item_list_header))
             }
 
             items(listItems) { item ->
@@ -217,7 +216,7 @@ class MainActivity : ComponentActivity() {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text(text = "OneList") },
+                    title = { Text(text = stringResource(id = R.string.app_name)) },
                     backgroundColor = MaterialTheme.colors.primary,
                     contentColor = MaterialTheme.colors.onPrimary,
 //                navigationIcon = {
