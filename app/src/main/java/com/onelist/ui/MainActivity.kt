@@ -103,13 +103,14 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun ItemRow(name: String) {
+    private fun ItemRow(item: Item) {
         //TODO Will be the container for a single item
 
-        //var itemName by remember { mutableStateOf("") }
-        //var quantity by remember { mutableStateOf("") }
-        //var category by remember { mutableStateOf("") }
-        //val context = LocalContext.current
+        var itemName by remember { mutableStateOf(item.name) }
+        var itemId by remember { mutableStateOf(item.itemID) }
+        var quantity by remember { mutableStateOf(item.quantity) }
+        var category by remember { mutableStateOf(item.quantity) }
+        val context = LocalContext.current
 
         Row(
             modifier = Modifier
@@ -121,12 +122,12 @@ class MainActivity : ComponentActivity() {
         ) {
             Column {
                 Text(
-                    text = name,
+                    text = itemName,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W700,
                     modifier = Modifier.padding(2.dp)
                 ) //Name
-                Text(text = "Qty: 1", modifier = Modifier.padding(2.dp)) //Quantity
+                Text(text = "Qty: $quantity", modifier = Modifier.padding(2.dp)) //Quantity
 
             }
             Row(
@@ -194,7 +195,11 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun ItemList() { //Example List
         //TODO Will be replaced with a list of items
-        val listItems = listOf("Bread", "Cheddar Cheese", "Apples", "Toilet Paper", "Hand Soap")
+        val listItems: List<Item> = listOf(
+            Item("ID", "Bread", listOf("ID1", "ID2"), 1, true),
+            Item("ID", "Apples", listOf("ID1", "ID2"), 5, false),
+            Item("ID", "Toilet Paper", listOf("ID1", "ID2"), 3, true)
+        )
         LazyColumn {
             stickyHeader {
                 //TODO Make separate function for header
