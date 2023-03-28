@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.onelist.MainViewModel
 import com.onelist.R
+import com.onelist.dto.Category
 import com.onelist.dto.Item
 import com.onelist.dto.User
 import com.onelist.ui.theme.OneListTheme
@@ -160,7 +161,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun CategoryHeader(name: String) {
+    private fun CategoryHeader(category: Category) {
         //TODO Header for each category
         Divider(
             color = MaterialTheme.colors.onBackground,
@@ -175,7 +176,7 @@ class MainActivity : ComponentActivity() {
                 .background(color = MaterialTheme.colors.primaryVariant)
         ) {
             Text(
-                text = name,
+                text = category.name,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.W700,
                 color = MaterialTheme.colors.onBackground,
@@ -203,7 +204,7 @@ class MainActivity : ComponentActivity() {
         LazyColumn {
             stickyHeader {
                 //TODO Make separate function for header
-                CategoryHeader(stringResource(id = R.string.item_list_header))
+                CategoryHeader(category = Category("ID", "Groceries"))
             }
 
             items(listItems) { item ->
