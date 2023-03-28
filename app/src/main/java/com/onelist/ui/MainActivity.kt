@@ -39,7 +39,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+    //private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,59 +48,7 @@ class MainActivity : ComponentActivity() {
             viewModel.fetchItems()
             val items by viewModel.items.observeAsState(initial = emptyList())
             OneListTheme {
-                ListView(items)
-            }
-        }
-    }
-
-    @Composable
-    fun ItemName() { //Example Form
-        //TODO Will be replaced with a list of items
-        var itemName by remember { mutableStateOf("") }
-        var quantity by remember { mutableStateOf("") }
-        var category by remember { mutableStateOf("") }
-        val context = LocalContext.current
-        Column {
-            OutlinedTextField(
-                value = itemName,
-                onValueChange = { itemName = it },
-                label = { Text(stringResource(R.string.ItemName)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = quantity,
-                onValueChange = { quantity = it },
-                label = { Text(stringResource(R.string.Quantity)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = category,
-                onValueChange = { category = it },
-                label = { Text(stringResource(R.string.Category)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    Toast.makeText(
-                        context,
-                        "$itemName $quantity $category",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            )
-            {
-                Text(text = "Submit")
-            }
-
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    signIn()
-                }
-                    ){
-
-                Text(text = "Sign In")
+                ListView()
             }
         }
     }
@@ -108,11 +56,6 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun ItemRow(item: Item) {
         //TODO Will be the container for a single item
-
-        var itemName by remember { mutableStateOf(item.name) }
-        var quantity by remember { mutableStateOf(item.quantity.toString()) }
-        var purchased by remember { mutableStateOf(item.purchased) }
-        val context = LocalContext.current
 
         Row(
             modifier = Modifier
@@ -124,12 +67,12 @@ class MainActivity : ComponentActivity() {
         ) {
             Column {
                 Text(
-                    text = itemName,
+                    text = item.name,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W700,
                     modifier = Modifier.padding(2.dp)
                 ) //Name
-                Text(text = "Qty: $quantity", modifier = Modifier.padding(2.dp)) //Quantity
+                Text(text = "Qty: ${item.quantity}", modifier = Modifier.padding(2.dp)) //Quantity
 
             }
             Row(
@@ -299,7 +242,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .fillMaxWidth()
                 ) {
-                    ItemList()
+                    ItemList(items)
                 }
             },
             floatingActionButton = {
@@ -319,11 +262,20 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    private val previewData = listOf(
+            Item("123", "Orange", listOf("1"), 3, false ),
+            Item("123", "Bread", listOf("1"), 1, false),
+            Item("123", "Toilet Paper", listOf("1"), 2, false),
+
+    )
+
+    private val previewItem = Item("123", "Apple", listOf("1"), 3, false )
+
     @Preview(showBackground = true, name = "test", device = "spec:width=411dp,height=891dp", showSystemUi = true)
     @Composable
     fun DefaultPreview() {
         OneListTheme {
-            ListView()
+            ListView(previewData)
         }
     }
 
@@ -331,7 +283,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun DarkPreview() {
         OneListTheme(darkTheme = true) {
-            ListView()
+            ListView(previewData)
         }
     }
     
@@ -339,7 +291,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun DefaultDialogPreview() {
         OneListTheme {
-            ListView()
+            ListView(previewData)
             ItemDialogue(item = null)
         }
     }
@@ -348,47 +300,48 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun DarkDialogPreview() {
         OneListTheme(darkTheme = true) {
-            ListView()
+            ListView(previewData)
             ItemDialogue(item = Item("1", "Bread", listOf("1"), 1, true))
         }
     }
+
     
-    private fun signIn() {
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build()
-        )
-        val signInIntent = AuthUI.getInstance()
-            .createSignInIntentBuilder()
-            .setAvailableProviders(providers)
-            .build()
-
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            signInLauncher.launch(signInIntent)
-        } else {
-            // User is already signed in
-        }
-    }
-
-    private val signInLauncher = registerForActivityResult (
-        FirebaseAuthUIActivityResultContract()
-    ) { result ->
-        signInResult(result)
-    }
-
-
-    private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
-        val response = result.idpResponse
-        if (result.resultCode == RESULT_OK) {
-            firebaseUser = FirebaseAuth.getInstance().currentUser
-            firebaseUser?.let {
-                val user = User(it.uid, it.displayName!!)
-                viewModel.user = user
-                viewModel.saveUser(user)
-            }
-        } else {
-            val error = response?.error?.errorCode ?: "unknown error"
-            Log.e("MainActivity.kt", "Error logging in: $error")
-        }
-    }
+//    private fun signIn() {
+//        val providers = arrayListOf(
+//            AuthUI.IdpConfig.EmailBuilder().build(),
+//            AuthUI.IdpConfig.GoogleBuilder().build()
+//        )
+//        val signInIntent = AuthUI.getInstance()
+//            .createSignInIntentBuilder()
+//            .setAvailableProviders(providers)
+//            .build()
+//
+//        if (FirebaseAuth.getInstance().currentUser == null) {
+//            signInLauncher.launch(signInIntent)
+//        } else {
+//            // User is already signed in
+//        }
+//    }
+//
+//    private val signInLauncher = registerForActivityResult (
+//        FirebaseAuthUIActivityResultContract()
+//    ) { result ->
+//        signInResult(result)
+//    }
+//
+//
+//    private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
+//        val response = result.idpResponse
+//        if (result.resultCode == RESULT_OK) {
+//            firebaseUser = FirebaseAuth.getInstance().currentUser
+//            firebaseUser?.let {
+//                val user = User(it.uid, it.displayName!!)
+//                viewModel.user = user
+//                viewModel.saveUser(user)
+//            }
+//        } else {
+//            val error = response?.error?.errorCode ?: "unknown error"
+//            Log.e("MainActivity.kt", "Error logging in: $error")
+//        }
+//    }
 }
