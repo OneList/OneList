@@ -1,20 +1,28 @@
 package com.onelist
 
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.onelist.dto.*
+import com.onelist.service.IItemService
 import com.onelist.service.ItemService
+import com.onelist.service.UserService
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainViewModel : ViewModel() {
+class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel() {
     var items : MutableLiveData<List<Item>> = MutableLiveData<List<Item>>()
-    var itemService : ItemService = ItemService()
+    var shoppingLists : MutableLiveData<List<ShoppingList>> = MutableLiveData<List<ShoppingList>>()
+    var userService : UserService = UserService()
+    var user: User? = null
+    //var itemService : ItemService = ItemService()
 
     private lateinit var firestore : FirebaseFirestore
+
 
     init {
         firestore = FirebaseFirestore.getInstance()
@@ -25,6 +33,13 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             var innerItems = itemService.fetchItems()
             items.postValue(innerItems)
+        }
+    }
+
+    fun fetchShoppingLists() {
+        viewModelScope.launch {
+            var results = userService.fetchShoppingLists()
+            shoppingLists.postValue(results)
         }
     }
 
