@@ -1,0 +1,19 @@
+[{
+    "id": "12351",
+    "name": "Apple",
+    "quantity": 3,
+    "purchased": false
+},
+{
+    "id": "12351",
+    "name": "Bread",
+    "quantity": 1,
+    "purchased": false
+},
+{
+    "id": "12351",
+    "name": "Toilet Paper",
+    "quantity": 3,
+    "purchased": false
+}
+]
