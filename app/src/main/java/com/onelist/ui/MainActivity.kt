@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
             viewModel.fetchItems()
             val items by viewModel.items.observeAsState(initial = emptyList())
             OneListTheme {
-                ListView()
+                ListView(items)
             }
         }
     }
