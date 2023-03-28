@@ -161,13 +161,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun CategoryHeader(name: String) {
         //TODO Header for each category
-        Divider(
-            color = MaterialTheme.colors.onBackground,
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxHeight()
-                .fillMaxWidth()
-        )
+        categoryDivider()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -181,13 +175,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.padding(2.dp)
             )
         }
-        Divider(
-            color = MaterialTheme.colors.onBackground,
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxHeight()
-                .fillMaxWidth()
-        )
+        categoryDivider()
     }
 
     @OptIn(ExperimentalFoundationApi::class)
