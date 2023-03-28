@@ -22,7 +22,7 @@ class ItemUnitTest {
         runTest {
             givenItemServiceIsInitialized()
             whenItemDataIsReadAndParsed()
-            thenItemCollectionShouldContainRamen()
+            thenItemCollectionShouldContainApple()
         }
 
     private fun givenItemServiceIsInitialized() {
@@ -33,15 +33,15 @@ class ItemUnitTest {
         allItems = itemService.fetchItems()
     }
 
-    private fun thenItemCollectionShouldContainRamen() {
+    private fun thenItemCollectionShouldContainApple() {
         assertNotNull(allItems)
         assertTrue(allItems!!.isNotEmpty())
-        var containsRamen = false
+        var containsApple = false
         allItems!!.forEach {
-            if (it.name.equals("ramen")) {
-                containsRamen = true
+            if (it.name.equals("Apple")) {
+                containsApple = true
             }
         }
-        assertTrue(containsRamen)
+        assertTrue(containsApple)
     }
 }
