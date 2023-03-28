@@ -208,6 +208,63 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
+    fun ItemDialogue(item: Item?){
+        //TODO Dialogue for adding items
+
+        var itemName by remember { mutableStateOf("") }
+        var quantity by remember { mutableStateOf("") }
+        val context = LocalContext.current
+
+        if(item != null){
+            itemName = item.name
+            quantity = item.quantity.toString()
+        }
+
+        AlertDialog(
+            onDismissRequest = { /*TODO*/ },
+            title = { Text(text = if(item == null) "Add Item" else "Edit Item", fontSize = 20.sp, fontWeight = FontWeight.W700, modifier = Modifier.padding(2.dp)) },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        value = itemName,
+                        onValueChange = { itemName = it },
+                        label = { Text(stringResource(R.string.ItemName)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = quantity,
+                        onValueChange = { quantity = it },
+                        label = { Text(stringResource(R.string.Quantity)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        Toast.makeText(
+                            context,
+                            "$itemName $quantity",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                )
+                {
+                    Text(text = "Submit")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { /*TODO*/ }
+                )
+                {
+                    Text(text = "Cancel")
+                }
+            }
+        )
+    }
+
+    @Composable
     fun ListView() { //Main Shopping List View
         Scaffold(
             topBar = {
@@ -275,8 +332,25 @@ class MainActivity : ComponentActivity() {
             ListView()
         }
     }
+    
+    @Preview(showBackground = true, name = "test", device = "spec:width=411dp,height=891dp", showSystemUi = true)
+    @Composable
+    fun DefaultDialogPreview() {
+        OneListTheme {
+            ListView()
+            ItemDialogue(item = null)
+        }
+    }
 
-
+    @Preview(showBackground = true, name = "test", device = "spec:width=411dp,height=891dp", showSystemUi = true)
+    @Composable
+    fun DarkDialogPreview() {
+        OneListTheme(darkTheme = true) {
+            ListView()
+            ItemDialogue(item = Item("1", "Bread", listOf("1"), 1, true))
+        }
+    }
+    
     private fun signIn() {
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
