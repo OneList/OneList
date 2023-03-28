@@ -57,6 +57,7 @@ class MainActivity : ComponentActivity() {
         var quantity by remember { mutableStateOf("") }
         var category by remember { mutableStateOf("") }
         val context = LocalContext.current
+
         Column {
             OutlinedTextField(
                 value = itemName,
@@ -203,11 +204,6 @@ class MainActivity : ComponentActivity() {
                     title = { Text(text = "OneList") },
                     backgroundColor = MaterialTheme.colors.primary,
                     contentColor = MaterialTheme.colors.onPrimary,
-//                navigationIcon = {
-//                    IconButton(onClick = {}) {
-//                        Icon(Icons.Filled.ArrowBack, "backIcon")
-//                    }
-//                },
                     elevation = 0.dp,
                     actions = {
                         IconButton(onClick = {/* Do Something*/ }) {
