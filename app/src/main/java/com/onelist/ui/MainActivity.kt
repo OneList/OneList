@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -44,8 +45,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            viewModel.fetchItems()
+            val items by viewModel.items.observeAsState(initial = emptyList())
             OneListTheme {
-                ListView()
+                ListView(items)
             }
         }
     }
@@ -103,13 +106,13 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun ItemRow(name: String) {
+    private fun ItemRow(item: Item) {
         //TODO Will be the container for a single item
 
-        //var itemName by remember { mutableStateOf("") }
-        //var quantity by remember { mutableStateOf("") }
-        //var category by remember { mutableStateOf("") }
-        //val context = LocalContext.current
+        var itemName by remember { mutableStateOf(item.name) }
+        var quantity by remember { mutableStateOf(item.quantity.toString()) }
+        var purchased by remember { mutableStateOf(item.purchased) }
+        val context = LocalContext.current
 
         Row(
             modifier = Modifier
@@ -121,12 +124,12 @@ class MainActivity : ComponentActivity() {
         ) {
             Column {
                 Text(
-                    text = name,
+                    text = itemName,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W700,
                     modifier = Modifier.padding(2.dp)
                 ) //Name
-                Text(text = "Qty: 1", modifier = Modifier.padding(2.dp)) //Quantity
+                Text(text = "Qty: $quantity", modifier = Modifier.padding(2.dp)) //Quantity
 
             }
             Row(
@@ -192,16 +195,15 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    fun ItemList() { //Example List
-        //TODO Will be replaced with a list of items
-        val listItems = listOf("Bread", "Cheddar Cheese", "Apples", "Toilet Paper", "Hand Soap")
+    fun ItemList(items : List<Item> = ArrayList<Item>()) { //Example List
+
         LazyColumn {
             stickyHeader {
                 //TODO Make separate function for header
                 CategoryHeader("Test Header")
             }
 
-            items(listItems) { item ->
+            items(items) { item ->
                 ItemRow(item)
             }
         }
@@ -265,7 +267,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun ListView() { //Main Shopping List View
+    fun ListView(items : List<Item> = ArrayList<Item>()) { //Main Shopping List View
         Scaffold(
             topBar = {
                 TopAppBar(
