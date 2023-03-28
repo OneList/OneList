@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,10 +32,10 @@ import com.google.firebase.auth.FirebaseUser
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.onelist.MainViewModel
 import com.onelist.R
+import com.onelist.dto.Category
 import com.onelist.dto.Item
 import com.onelist.dto.User
 import com.onelist.ui.theme.OneListTheme
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -61,19 +62,19 @@ class MainActivity : ComponentActivity() {
             OutlinedTextField(
                 value = itemName,
                 onValueChange = { itemName = it },
-                label = { Text(stringResource(R.string.ItemName)) },
+                label = { Text(stringResource(R.string.item_name)) },
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = quantity,
                 onValueChange = { quantity = it },
-                label = { Text(stringResource(R.string.Quantity)) },
+                label = { Text(stringResource(R.string.quantity)) },
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = category,
                 onValueChange = { category = it },
-                label = { Text(stringResource(R.string.Category)) },
+                label = { Text(stringResource(R.string.category)) },
                 modifier = Modifier.fillMaxWidth()
             )
             Button(
@@ -87,7 +88,7 @@ class MainActivity : ComponentActivity() {
                 }
             )
             {
-                Text(text = "Submit")
+                Text(text = stringResource(id = R.string.submit))
             }
 
             Button(
@@ -97,19 +98,20 @@ class MainActivity : ComponentActivity() {
                 }
                     ){
 
-                Text(text = "Sign In")
+                Text(text = stringResource(id = R.string.sign_in))
             }
         }
     }
 
     @Composable
-    private fun ItemRow(name: String) {
+    private fun ItemRow(item: Item) {
         //TODO Will be the container for a single item
 
-        //var itemName by remember { mutableStateOf("") }
-        //var quantity by remember { mutableStateOf("") }
-        //var category by remember { mutableStateOf("") }
-        //val context = LocalContext.current
+        var itemName by remember { mutableStateOf(item.name) }
+        var itemId by remember { mutableStateOf(item.itemID) }
+        var quantity by remember { mutableStateOf(item.quantity) }
+        var category by remember { mutableStateOf(item.quantity) }
+        val context = LocalContext.current
 
         Row(
             modifier = Modifier
@@ -121,12 +123,12 @@ class MainActivity : ComponentActivity() {
         ) {
             Column {
                 Text(
-                    text = name,
+                    text = itemName,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W700,
                     modifier = Modifier.padding(2.dp)
                 ) //Name
-                Text(text = "Qty: 1", modifier = Modifier.padding(2.dp)) //Quantity
+                Text(text = "Qty: $quantity", modifier = Modifier.padding(2.dp)) //Quantity
 
             }
             Row(
@@ -159,7 +161,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun CategoryHeader(name: String) {
+    private fun CategoryHeader(category: Category) {
         //TODO Header for each category
         Divider(
             color = MaterialTheme.colors.onBackground,
@@ -174,7 +176,7 @@ class MainActivity : ComponentActivity() {
                 .background(color = MaterialTheme.colors.primaryVariant)
         ) {
             Text(
-                text = name,
+                text = category.name,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.W700,
                 color = MaterialTheme.colors.onBackground,
@@ -194,11 +196,15 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun ItemList() { //Example List
         //TODO Will be replaced with a list of items
-        val listItems = listOf("Bread", "Cheddar Cheese", "Apples", "Toilet Paper", "Hand Soap")
+        val listItems: List<Item> = listOf(
+            Item("ID", "Bread", listOf("ID1", "ID2"), 1, true),
+            Item("ID", "Apples", listOf("ID1", "ID2"), 5, false),
+            Item("ID", "Toilet Paper", listOf("ID1", "ID2"), 3, true)
+        )
         LazyColumn {
             stickyHeader {
                 //TODO Make separate function for header
-                CategoryHeader("Test Header")
+                CategoryHeader(category = Category("ID", "Groceries"))
             }
 
             items(listItems) { item ->
@@ -269,7 +275,7 @@ class MainActivity : ComponentActivity() {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text(text = "OneList") },
+                    title = { Text(text = stringResource(id = R.string.app_name)) },
                     backgroundColor = MaterialTheme.colors.primary,
                     contentColor = MaterialTheme.colors.onPrimary,
 //                navigationIcon = {
@@ -307,10 +313,7 @@ class MainActivity : ComponentActivity() {
                     contentColor = MaterialTheme.colors.onPrimary,
                     modifier = Modifier.size(80.dp)
                 ) {
-                    Text(
-                        text = "+",
-                        fontSize = 52.sp
-                    )
+                    Icon(painterResource(id = R.drawable.ic_add_foreground), "add")
                 }
 
             }
