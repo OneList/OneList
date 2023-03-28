@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -99,8 +101,12 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun CategoryHeader(name: String) {
+    private fun CategoryHeader(categoryName: String) {
         //TODO Header for each category
+
+        var headerColor = MaterialTheme.colors.primaryVariant
+        if (categoryName.lowercase() == "purchased"){headerColor = MaterialTheme.colors.secondary}
+
         Divider(
             color = MaterialTheme.colors.onBackground,
             modifier = Modifier
@@ -111,10 +117,10 @@ class MainActivity : ComponentActivity() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colors.primaryVariant)
+                .background(color = headerColor)
         ) {
             Text(
-                text = name,
+                text = categoryName,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.W700,
                 color = MaterialTheme.colors.onBackground,
@@ -141,7 +147,16 @@ class MainActivity : ComponentActivity() {
             }
 
             items(items) { item ->
-                ItemRow(item)
+                if(!item.purchased){ItemRow(item)}
+            }
+
+            stickyHeader {
+                //TODO Make separate function for header
+                CategoryHeader("Purchased")
+            }
+            
+            items(items) {item ->
+                if(item.purchased){ItemRow(item)}
             }
         }
     }
@@ -246,9 +261,10 @@ class MainActivity : ComponentActivity() {
                     contentColor = MaterialTheme.colors.onPrimary,
                     modifier = Modifier.size(80.dp)
                 ) {
-                    Text(
-                        text = "+",
-                        fontSize = 52.sp
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "Add New Item",
+                        modifier = Modifier.size(52.dp)
                     )
                 }
 
@@ -260,6 +276,7 @@ class MainActivity : ComponentActivity() {
             Item("123", "Orange", listOf("1"), 3, false ),
             Item("123", "Bread", listOf("1"), 1, false),
             Item("123", "Toilet Paper", listOf("1"), 2, false),
+        Item("123", "Detergent", listOf("1"), 1, true),
 
     )
 
@@ -295,7 +312,7 @@ class MainActivity : ComponentActivity() {
     fun DarkDialogPreview() {
         OneListTheme(darkTheme = true) {
             ListView(previewData)
-            ItemDialogue(item = Item("1", "Bread", listOf("1"), 1, true))
+            ItemDialogue(previewItem)
         }
     }
 }
