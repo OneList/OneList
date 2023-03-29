@@ -51,58 +51,6 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun ItemName() { //Example Form
-        //TODO Will be replaced with a list of items
-        var itemName by remember { mutableStateOf("") }
-        var quantity by remember { mutableStateOf("") }
-        var category by remember { mutableStateOf("") }
-        val context = LocalContext.current
-        Column {
-            OutlinedTextField(
-                value = itemName,
-                onValueChange = { itemName = it },
-                label = { Text(stringResource(R.string.ItemName)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = quantity,
-                onValueChange = { quantity = it },
-                label = { Text(stringResource(R.string.Quantity)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = category,
-                onValueChange = { category = it },
-                label = { Text(stringResource(R.string.Category)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    Toast.makeText(
-                        context,
-                        "$itemName $quantity $category",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            )
-            {
-                Text(text = "Submit")
-            }
-
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    signIn()
-                }
-                    ){
-
-                Text(text = "Sign In")
-            }
-        }
-    }
-
-    @Composable
     private fun ItemRow(name: String) {
         //TODO Will be the container for a single item
 
