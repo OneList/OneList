@@ -333,8 +333,8 @@ class MainActivity : ComponentActivity() {
                 viewModel.saveUser(user)
             }
         } else {
-            val error = response?.error?.errorCode ?: "unknown error"
-            Log.e("MainActivity.kt", "Error logging in: $error")
+            Log.e("MainActivity.kt", "Error logging in, error code: "
+                    + response?.error?.errorCode)
         }
     }
 }
