@@ -1,10 +1,12 @@
 package com.onelist
 
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -76,8 +78,16 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
         }
         item.itemID = document.id
         val handle = document.set(item)
-        handle.addOnSuccessListener { Log.i("Firebase", "Item Saved") }
+        handle.addOnSuccessListener { Log.i("Firebase", "Item saved") }
         handle.addOnFailureListener { Log.e("Firebase", "Item save failed $it") }
+    }
+
+    fun deleteItem(item: Item) {
+        val document = firestore.collection("items").document(item.itemID)
+        val handle = document.delete()
+        handle.addOnSuccessListener { Log.i("Firebase", "Item deleted") }
+        handle.addOnFailureListener { Log.e("Firebase", "Item delete failed $it") }
+
     }
 
     fun saveCategory(category: Category) {
@@ -115,4 +125,22 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
         handle.addOnSuccessListener { Log.i("Firebase", "User Saved") }
         handle.addOnFailureListener { Log.e("Firebase", "User save failed $it") }
     }
+
+    fun validateItemInfoInDialog(itemName: String, itemQuantity: String): Pair<Boolean, Int>{
+        if(itemName.isEmpty() || itemQuantity.isEmpty()){
+            return Pair(false, R.string.enter_fields)
+        }
+        try{
+            itemQuantity.toInt()
+            if(itemQuantity.toInt() < 1){
+                return Pair(false, R.string.enter_one)
+            }
+        }catch(ex: NumberFormatException){
+            return Pair(false, R.string.enter_number)
+        }
+
+        return Pair(true, 0)
+    }
+
+
 }
