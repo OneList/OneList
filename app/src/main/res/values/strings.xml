@@ -13,4 +13,10 @@
     <string name="ItemName">Item Name</string>
     <string name="Quantity">Quantity</string>
     <string name="Category">Category</string>
+    <string name="purchased">Purchased</string>
+    <string name="not_purchased">Not Purchased</string>
+    <string name="add_item">Add Item</string>
+    <string name="edit_item">Edit Item</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
 </resources>
