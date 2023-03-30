@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         imageVector = Icons.Filled.MoreVert,
-                        contentDescription = "Edit Item",
+                        contentDescription = "Item Options",
                         tint = MaterialTheme.colors.onBackground
                     )
                 }
@@ -106,10 +106,9 @@ class MainActivity : ComponentActivity() {
      */
     @Composable
     private fun CategoryHeader(categoryName: String) {
-        //TODO Header for each category
-
+        //Set color to primaryVariant, but if header is for "Purchased", change color to secondary
         var headerColor = MaterialTheme.colors.primaryVariant
-        if (categoryName.lowercase() == "purchased"){headerColor = MaterialTheme.colors.secondary}
+        if (categoryName.lowercase() == stringResource(R.string.purchased).lowercase()){headerColor = MaterialTheme.colors.secondary}
 
         Divider(
             color = MaterialTheme.colors.onBackground,
@@ -150,7 +149,7 @@ class MainActivity : ComponentActivity() {
 
         LazyColumn {
             stickyHeader {
-                CategoryHeader("Test Header")
+                CategoryHeader(stringResource(R.string.not_purchased))
             }
 
             items(items) { item ->
@@ -158,7 +157,7 @@ class MainActivity : ComponentActivity() {
             }
 
             stickyHeader {
-                CategoryHeader("Purchased")
+                CategoryHeader(stringResource(R.string.purchased))
             }
             
             items(items) {item ->
@@ -179,14 +178,18 @@ class MainActivity : ComponentActivity() {
         var quantity by remember { mutableStateOf("") }
         val context = LocalContext.current
 
+        //If item is present, update text fields to use the item's current information
         if(item != null){
             itemName = item.name
             quantity = item.quantity.toString()
         }
 
+        //Check if item present, if not change title to the "Add Item" string
+        val dialogTitle = if(item == null) stringResource(R.string.add_item) else stringResource(R.string.edit_item)
+
         AlertDialog(
             onDismissRequest = { /*TODO*/ },
-            title = { Text(text = if(item == null) "Add Item" else "Edit Item", fontSize = 20.sp, fontWeight = FontWeight.W700, modifier = Modifier.padding(2.dp)) },
+            title = { Text(text = dialogTitle, fontSize = 20.sp, fontWeight = FontWeight.W700, modifier = Modifier.padding(2.dp)) },
             text = {
                 Column {
                     OutlinedTextField(
