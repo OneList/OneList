@@ -102,7 +102,7 @@ class MainActivity : ComponentActivity() {
 
     /**
      * Creates a Header for the specified Category, if "Purchased" is passed as name will create the header with a red color.
-     * @param name Name of the category used in the header
+     * @param categoryName Name of the category used in the header
      */
     @Composable
     private fun CategoryHeader(categoryName: String) {
@@ -172,20 +172,17 @@ class MainActivity : ComponentActivity() {
      */
     @Composable
     fun ItemDialogue(item: Item?){
-        //TODO Dialogue for adding items
-
         var itemName by remember { mutableStateOf("") }
         var quantity by remember { mutableStateOf("") }
         val context = LocalContext.current
+        var dialogTitle = stringResource(R.string.add_item)
 
-        //If item is present, update text fields to use the item's current information
-        if(item != null){
+        //If item is present, update text fields to use the item's current information, and change title to "Edit Item"
+        if(item != null) {
             itemName = item.name
             quantity = item.quantity.toString()
+            dialogTitle = stringResource(R.string.edit_item)
         }
-
-        //Check if item present, if not change title to the "Add Item" string
-        val dialogTitle = if(item == null) stringResource(R.string.add_item) else stringResource(R.string.edit_item)
 
         AlertDialog(
             onDismissRequest = { /*TODO*/ },
@@ -217,7 +214,7 @@ class MainActivity : ComponentActivity() {
                     }
                 )
                 {
-                    Text(text = "Submit")
+                    Text(text = stringResource(R.string.submit))
                 }
             },
             dismissButton = {
@@ -225,7 +222,7 @@ class MainActivity : ComponentActivity() {
                     onClick = { /*TODO*/ }
                 )
                 {
-                    Text(text = "Cancel")
+                    Text(text = stringResource(R.string.cancel))
                 }
             }
         )
