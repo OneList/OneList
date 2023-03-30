@@ -19,7 +19,6 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
     var shoppingLists : MutableLiveData<List<ShoppingList>> = MutableLiveData<List<ShoppingList>>()
     var userService : UserService = UserService()
     var user: User? = null
-    //var itemService : ItemService = ItemService()
 
     private lateinit var firestore : FirebaseFirestore
 
@@ -27,6 +26,28 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
     init {
         firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
+        listenToItems()
+    }
+
+    private fun listenToItems() {
+        firestore.collection("items").addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Log.w(
+                    "MainViewModel.listenToSpecimens()",
+                    "Error: could not recieve items ${error.message}"
+                )
+                return@addSnapshotListener
+            }
+            snapshot.let {
+                val allItems = ArrayList<Item>()
+                val documents = snapshot!!.documents
+                documents.forEach { document ->
+                    val item = document.toObject(Item::class.java)
+                    item?.let { allItems.add(it) }
+                }
+                items.value = allItems
+            }
+        }
     }
 
     fun fetchItems() {
