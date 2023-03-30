@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName
  * @property purchased boolean value to determine if the item was purchased or not
  * @constructor Creates an item with ID, name, category ID, quantity, and purchased value
  */
-data class Item(@SerializedName("id") var itemID: String = "", var name: String, var categoryIDs: List<String>, var quantity: Int, var purchased: Boolean) {
+data class Item(@SerializedName("id") var itemID: String = "", var name: String = "", var categoryIDs: List<String> = listOf(""), var quantity: Int = 0, var purchased: Boolean = false) {
 
     override fun toString(): String {
         return "$itemID - $name"
