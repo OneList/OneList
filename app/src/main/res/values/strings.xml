@@ -19,4 +19,10 @@
     <string name="edit_item">Edit Item</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
+    <string name="enter_fields">Please enter a name and quantity</string>
+    <string name="enter_one">Quantity must be at least 1</string>
+    <string name="enter_number">Please enter a number for Quantity</string>
+    <string name="name_too_long">Name must be 30 characters or less</string>
+    <string name="edit">Edit Item</string>
+    <string name="delete">Delete Item</string>
 </resources>

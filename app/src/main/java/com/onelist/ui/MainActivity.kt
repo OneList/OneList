@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,6 +32,8 @@ import com.onelist.ui.theme.OneListTheme
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
+    private var showDialog: Boolean by mutableStateOf(false)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +53,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun ItemRow(item: Item) {
         val context = LocalContext.current
+        var showDropdown: Boolean by remember {mutableStateOf(false)}
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -57,13 +62,16 @@ class MainActivity : ComponentActivity() {
                     bottom = 1.dp
                 )
         ) {
-            Column {
+            Column(
+                modifier = Modifier
+                    .width(315.dp)
+            ) {
                 Text(
                     text = item.name,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W700,
-                    modifier = Modifier.padding(2.dp)
-                ) //Name
+                    modifier = Modifier.padding(2.dp),
+                )
                 Text(text = "Qty: ${item.quantity}", modifier = Modifier.padding(2.dp)) //Quantity
 
             }
@@ -82,12 +90,32 @@ class MainActivity : ComponentActivity() {
                         tint = MaterialTheme.colors.onBackground
                     )
                 }
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(
+                    onClick = {
+                        showDropdown = true
+                }) {
                     Icon(
                         imageVector = Icons.Filled.MoreVert,
                         contentDescription = "Item Options",
                         tint = MaterialTheme.colors.onBackground
                     )
+                }
+                DropdownMenu(expanded = showDropdown, onDismissRequest = { showDropdown = false }) {
+                    DropdownMenuItem(
+                        onClick = {
+                            viewModel.selectedItem = item
+                            showDialog = true }
+                    ){
+                        Text(text = stringResource(R.string.edit))
+                    }
+                    DropdownMenuItem(
+                        onClick = {
+                            Toast.makeText(context, "${item.name} Deleted", Toast.LENGTH_SHORT).show()
+                            viewModel.deleteItem(item)
+                        }
+                    ){
+                        Text(text = stringResource(R.string.delete))
+                    }
                 }
             }
         }
@@ -171,21 +199,24 @@ class MainActivity : ComponentActivity() {
      * @param item Item to be edited, if null changes dialog to "Add Item" and adds a new item with specified details
      */
     @Composable
-    fun ItemDialogue(item: Item?){
-        var itemName by remember { mutableStateOf("") }
-        var quantity by remember { mutableStateOf("") }
+    fun ItemDialogue(){
+        var itemName by remember(viewModel.selectedItem.itemID) { mutableStateOf(viewModel.selectedItem.name) }
+        var itemQuantity by remember(viewModel.selectedItem.itemID) { mutableStateOf(viewModel.selectedItem.quantity.toString()) }
         val context = LocalContext.current
         var dialogTitle = stringResource(R.string.add_item)
 
-        //If item is present, update text fields to use the item's current information, and change title to "Edit Item"
-        if(item != null) {
-            itemName = item.name
-            quantity = item.quantity.toString()
+        if(itemQuantity == "0"){
+            itemQuantity = ""
+        }
+
+
+        //If item has an ID, change to "Edit Item"
+        if(viewModel.selectedItem.itemID.isNotEmpty()){
             dialogTitle = stringResource(R.string.edit_item)
         }
 
         AlertDialog(
-            onDismissRequest = { /*TODO*/ },
+            onDismissRequest = { showDialog = false },
             title = { Text(text = dialogTitle, fontSize = 20.sp, fontWeight = FontWeight.W700, modifier = Modifier.padding(2.dp)) },
             text = {
                 Column {
@@ -196,21 +227,26 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxWidth()
                     )
                     OutlinedTextField(
-                        value = quantity,
-                        onValueChange = { quantity = it },
+                        value = itemQuantity,
+                        onValueChange = { itemQuantity = it },
                         label = { Text(stringResource(R.string.Quantity)) },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                 }
             },
             confirmButton = {
                 Button(
                     onClick = {
-                        Toast.makeText(
-                            context,
-                            "$itemName $quantity",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        val validation = viewModel.validateItemInfoInDialog(itemName, itemQuantity)
+                        if(!validation.first){
+                            Toast.makeText(context, getString(validation.second), Toast.LENGTH_SHORT).show()
+                            return@Button
+                        }
+                        viewModel.selectedItem.name = itemName
+                        viewModel.selectedItem.quantity = itemQuantity.toInt()
+                        viewModel.saveItem(viewModel.selectedItem)
+                        showDialog = false
                     }
                 )
                 {
@@ -219,7 +255,7 @@ class MainActivity : ComponentActivity() {
             },
             dismissButton = {
                 Button(
-                    onClick = { /*TODO*/ }
+                    onClick = { showDialog = false}
                 )
                 {
                     Text(text = stringResource(R.string.cancel))
@@ -233,7 +269,8 @@ class MainActivity : ComponentActivity() {
      * @param items List of items to be passed into the various functions
      */
     @Composable
-    fun ListView(items : List<Item> = ArrayList<Item>()) { //Main Shopping List View
+    fun ListView(items : List<Item> = ArrayList<Item>()) {
+
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -261,11 +298,18 @@ class MainActivity : ComponentActivity() {
                         .fillMaxWidth()
                 ) {
                     ItemList(items)
+                    if(showDialog)
+                    {
+                        ItemDialogue()
+                    }
                 }
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        viewModel.selectedItem = Item()
+                        showDialog = true
+                              },
                     backgroundColor = MaterialTheme.colors.primary,
                     contentColor = MaterialTheme.colors.onPrimary,
                     modifier = Modifier.size(80.dp)
@@ -306,24 +350,6 @@ class MainActivity : ComponentActivity() {
     fun DarkPreview() {
         OneListTheme(darkTheme = true) {
             ListView(previewData)
-        }
-    }
-    
-    @Preview(showBackground = true, name = "test", device = "spec:width=411dp,height=891dp", showSystemUi = true)
-    @Composable
-    fun DefaultDialogPreview() {
-        OneListTheme {
-            ListView(previewData)
-            ItemDialogue(item = null)
-        }
-    }
-
-    @Preview(showBackground = true, name = "test", device = "spec:width=411dp,height=891dp", showSystemUi = true)
-    @Composable
-    fun DarkDialogPreview() {
-        OneListTheme(darkTheme = true) {
-            ListView(previewData)
-            ItemDialogue(previewItem)
         }
     }
 }
