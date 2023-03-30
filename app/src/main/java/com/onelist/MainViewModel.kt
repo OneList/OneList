@@ -2,6 +2,9 @@ package com.onelist
 
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,10 +19,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel() {
     var items : MutableLiveData<List<Item>> = MutableLiveData<List<Item>>()
+    var selectedItem by mutableStateOf(Item())
     var shoppingLists : MutableLiveData<List<ShoppingList>> = MutableLiveData<List<ShoppingList>>()
     var userService : UserService = UserService()
     var user: User? = null
-    //var itemService : ItemService = ItemService()
 
     private lateinit var firestore : FirebaseFirestore
 
@@ -27,11 +30,33 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
     init {
         firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
+        listenToItems()
+    }
+
+    private fun listenToItems() {
+        firestore.collection("items").addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Log.w(
+                    "MainViewModel.listenToSpecimens()",
+                    "Error: could not recieve items ${error.message}"
+                )
+                return@addSnapshotListener
+            }
+            snapshot.let {
+                val allItems = ArrayList<Item>()
+                val documents = snapshot!!.documents
+                documents.forEach { document ->
+                    val item = document.toObject(Item::class.java)
+                    item?.let { allItems.add(it) }
+                }
+                items.value = allItems
+            }
+        }
     }
 
     fun fetchItems() {
         viewModelScope.launch {
-            var innerItems = itemService.fetchItems()
+            var innerItems = emptyList<Item>()
             items.postValue(innerItems)
         }
     }
@@ -51,8 +76,8 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
         }
         item.itemID = document.id
         val handle = document.set(item)
-        handle.addOnSuccessListener { Log.d("Firebase", "Item Saved") }
-        handle.addOnFailureListener { Log.d("Firebase", "Item save failed $it") }
+        handle.addOnSuccessListener { Log.i("Firebase", "Item Saved") }
+        handle.addOnFailureListener { Log.e("Firebase", "Item save failed $it") }
     }
 
     fun saveCategory(category: Category) {
@@ -63,8 +88,8 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
         }
         category.categoryID = document.id
         val handle = document.set(category)
-        handle.addOnSuccessListener { Log.d("Firebase", "Category Saved") }
-        handle.addOnFailureListener { Log.d("Firebase", "Category save failed $it") }
+        handle.addOnSuccessListener { Log.i("Firebase", "Category Saved") }
+        handle.addOnFailureListener { Log.e("Firebase", "Category save failed $it") }
     }
 
     fun saveShoppingList(shoppingList: ShoppingList) {
@@ -75,8 +100,8 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
         }
         shoppingList.listID = document.id
         val handle = document.set(shoppingList)
-        handle.addOnSuccessListener { Log.d("Firebase", "Shopping List Saved") }
-        handle.addOnFailureListener { Log.d("Firebase", "Shopping list save failed $it") }
+        handle.addOnSuccessListener { Log.i("Firebase", "Shopping List Saved") }
+        handle.addOnFailureListener { Log.e("Firebase", "Shopping list save failed $it") }
     }
 
     fun saveUser(user: User) {
@@ -87,7 +112,7 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
         }
         user.userID = document.id
         val handle = document.set(user)
-        handle.addOnSuccessListener { Log.d("Firebase", "User Saved") }
-        handle.addOnFailureListener { Log.d("Firebase", "User save failed $it") }
+        handle.addOnSuccessListener { Log.i("Firebase", "User Saved") }
+        handle.addOnFailureListener { Log.e("Firebase", "User save failed $it") }
     }
 }

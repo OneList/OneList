@@ -11,10 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -51,8 +48,7 @@ class MainActivity : ComponentActivity() {
      */
     @Composable
     private fun ItemRow(item: Item) {
-        //TODO Will be the container for a single item
-
+        val context = LocalContext.current
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -75,9 +71,13 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                IconButton(onClick = {/*TODO*/ }) {
+                IconButton(
+                    onClick = {
+                        val updateItem = item.copy(purchased = !item.purchased) //I do not know why this is necessary, Jetpack Compose sometimes won't recompose unless I do a deep copy
+                        viewModel.saveItem(updateItem)
+                    }) {
                     Icon(
-                        imageVector = Icons.Filled.Done,
+                        imageVector = if(item.purchased) Icons.Filled.Close else Icons.Filled.Done,
                         contentDescription = "Mark as Purchased",
                         tint = MaterialTheme.colors.onBackground
                     )
