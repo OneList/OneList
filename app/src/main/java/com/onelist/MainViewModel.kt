@@ -1,5 +1,7 @@
 package com.onelist
 
+import android.content.ContentValues
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -20,6 +22,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel() {
+
     var items : MutableLiveData<List<Item>> = MutableLiveData<List<Item>>()
     var selectedItem by mutableStateOf(Item())
     var shoppingLists : MutableLiveData<List<ShoppingList>> = MutableLiveData<List<ShoppingList>>()
@@ -141,6 +144,8 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
 
         return Pair(true, 0)
     }
+
+
 
 
 }
