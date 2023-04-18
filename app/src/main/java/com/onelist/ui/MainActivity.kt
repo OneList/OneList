@@ -1,5 +1,6 @@
 package com.onelist.ui
 
+import android.Manifest
 import android.content.ContentValues
 import android.net.Uri
 import android.os.Bundle
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.onelist.MainViewModel
 import com.onelist.R
@@ -355,4 +357,11 @@ class MainActivity : ComponentActivity() {
             ListView(previewData)
         }
     }
+
+    private fun takePhoto() {
+        TODO("not yet implemented")
+    }
+
+    fun hasCameraPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+    fun hasExternalStoragePermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 }
