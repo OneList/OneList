@@ -1,12 +1,15 @@
 package com.onelist.ui
 
+import android.Manifest
 import android.content.ContentValues
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,6 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.onelist.MainViewModel
 import com.onelist.R
@@ -355,4 +359,42 @@ class MainActivity : ComponentActivity() {
             ListView(previewData)
         }
     }
+
+    private fun takePhoto() {
+        if (hasCameraPermission() == PackageManager.PERMISSION_GRANTED && hasExternalStoragePermission() == PackageManager.PERMISSION_GRANTED) {
+            invokeCamera()
+        } else {
+            // request permissions
+            requestMultiplePermissionsLauncher.launch(arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+            ))
+        }
+    }
+
+    private val requestMultiplePermissionsLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()) {
+            resultsMap ->
+        var permissionGranted = false
+
+        resultsMap.forEach { permission, isGranted ->
+            if (!isGranted) {
+                return@forEach
+            }
+            permissionGranted  = isGranted
+        }
+
+        if (permissionGranted) {
+            invokeCamera()
+        } else {
+            Toast.makeText(this, "Unable to take photo until granted permission", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun invokeCamera() {
+        TODO("Not yet implemented")
+    }
+
+    fun hasCameraPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+    fun hasExternalStoragePermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 }
