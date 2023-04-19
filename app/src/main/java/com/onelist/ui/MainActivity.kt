@@ -1,7 +1,6 @@
 package com.onelist.ui
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -350,8 +349,6 @@ class MainActivity : ComponentActivity() {
 
     )
 
-    private val previewItem = Item("123", "Apple", listOf("1"), 3, false )
-
     //Previews
     @Preview(showBackground = true, name = "test", device = "spec:width=411dp,height=891dp", showSystemUi = true)
     @Composable
@@ -407,7 +404,6 @@ class MainActivity : ComponentActivity() {
                 FileProvider.getUriForFile(this, "com.onelist.fileprovider", file)
         } catch (e: Exception) {
             Log.e(TAG, "Error: ${e.message}")
-            var foo = e.message
         }
         cameraLauncher.launch(uri)
     }
