@@ -1,12 +1,17 @@
 package com.onelist.ui
 
+import android.Manifest
 import android.content.ContentValues
+import android.content.ContentValues.TAG
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,14 +31,22 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.onelist.MainViewModel
 import com.onelist.R
 import com.onelist.dto.Item
 import com.onelist.ui.theme.OneListTheme
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : ComponentActivity() {
 
+    private var uri: Uri? = null
+    private lateinit var currentImagePath: String
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
     private var showDialog: Boolean by mutableStateOf(false)
 
@@ -355,4 +368,68 @@ class MainActivity : ComponentActivity() {
             ListView(previewData)
         }
     }
+
+    private fun takePhoto() {
+        if (hasCameraPermission() == PackageManager.PERMISSION_GRANTED && hasExternalStoragePermission() == PackageManager.PERMISSION_GRANTED) {
+            invokeCamera()
+        } else {
+            // request permissions
+            requestMultiplePermissionsLauncher.launch(arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+            ))
+        }
+    }
+
+    private val requestMultiplePermissionsLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()) {
+            resultsMap ->
+        var permissionGranted = false
+
+        resultsMap.forEach { permission, isGranted ->
+            if (!isGranted) {
+                return@forEach
+            }
+            permissionGranted  = isGranted
+        }
+
+        if (permissionGranted) {
+            invokeCamera()
+        } else {
+            Toast.makeText(this, "Unable to take photo until granted permission", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun invokeCamera() {
+        var file = createImageFile()
+        try {
+            uri =
+                FileProvider.getUriForFile(this, "com.onelist.fileprovider", file)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error: ${e.message}")
+            var foo = e.message
+        }
+        cameraLauncher.launch(uri)
+    }
+
+    private fun createImageFile() : File {
+        val timestamp = SimpleDateFormat("yyyMMdd_HHmmss").format(Date())
+        val imageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile("Specimen_$timestamp", ".jpg",
+            imageDirectory).apply {
+            currentImagePath = absolutePath
+        }
+    }
+
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+            success ->
+        if (success) {
+            Log.i("MainActivity", "Image Location $uri")
+        } else {
+            Log.e("MainActivity", "IMage not saved $uri")
+        }
+    }
+
+    fun hasCameraPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+    fun hasExternalStoragePermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 }
