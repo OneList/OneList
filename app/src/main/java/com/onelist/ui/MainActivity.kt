@@ -139,6 +139,13 @@ class MainActivity : ComponentActivity() {
                     ){
                         Text(text = stringResource(R.string.delete))
                     }
+                    DropdownMenuItem(
+                        onClick = {
+                            takePhoto()
+                        }
+                    ){
+                        Text(text = stringResource(R.string.add_image))
+                    }
                 }
             }
         }
