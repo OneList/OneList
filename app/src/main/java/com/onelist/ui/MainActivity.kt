@@ -48,6 +48,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.onelist.dto.Photo
 
 class MainActivity : ComponentActivity() {
 
@@ -439,6 +440,10 @@ class MainActivity : ComponentActivity() {
             success ->
         if (success) {
             Log.i("MainActivity", "Image Location $uri")
+            var strUri = uri.toString()
+            val photo = Photo(localUri = strUri)
+            viewModel.photos.add(photo)
+            viewModel.save()
         } else {
             Log.e("MainActivity", "IMage not saved $uri")
         }

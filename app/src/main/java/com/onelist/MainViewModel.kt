@@ -45,7 +45,7 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
         firestore.collection("items").addSnapshotListener { snapshot, error ->
             if (error != null) {
                 Log.w(
-                    "MainViewModel.listenToSpecimens()",
+                    "MainViewModel.listenToItems()",
                     "Error: could not recieve items ${error.message}"
                 )
                 return@addSnapshotListener
@@ -169,7 +169,7 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
         }
     }
 
-    private fun updatePhotoDatabase(photo: Photo) {
+    fun updatePhotoDatabase(photo: Photo) {
         user?.let {
                 user ->
             var photoCollection = firestore.collection("users").document(user.uid).collection("items").document(selectedItem.itemID).collection("photos")
@@ -186,23 +186,6 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
     }
 
     fun save() {
-        user?.let {
-                user ->
-            val document =
-                if (selectedItem.itemID == null || selectedItem.itemID.isEmpty()) {
-                    firestore.collection("users").document(user.uid).collection("items").document()
-                } else {
-                    firestore.collection("users").document(user.uid).collection("items").document(selectedItem.itemID)
-                }
-            selectedItem.itemID = document.id
-            val handle = document.set(selectedItem)
-            handle.addOnSuccessListener {
-                Log.d("Firebase", "Document saved")
-                if (photos.isNotEmpty()) {
-                    uploadPhotos()
-                }
-            }
-            handle.addOnFailureListener { Log.e("FIrebase", "Save failed $it") }
-        }
+        if (photos.isNotEmpty()) { uploadPhotos() }
     }
 }
