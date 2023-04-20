@@ -142,7 +142,7 @@ class MainActivity : ComponentActivity() {
                     }
                     DropdownMenuItem(
                         onClick = {
-                            //TODO: Add image capture
+                            takePhoto()
                         }
                     ){
                         Text(text = stringResource(R.string.add_image))

@@ -172,12 +172,12 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
     private fun updatePhotoDatabase(photo: Photo) {
         user?.let {
                 user ->
-            var photoCollection = firestore.collection("users").document(user.uid).collection("specimens").document(selectedItem.itemID).collection("photos")
+            var photoCollection = firestore.collection("users").document(user.uid).collection("items").document(selectedItem.itemID).collection("photos")
             var handle = photoCollection.add(photo)
             handle.addOnSuccessListener {
                 Log.i(ContentValues.TAG, "Successfully updated photo metadata")
                 photo.id = it.id
-                firestore.collection("users").document(user.uid).collection("specimens").document(selectedItem.itemID).collection("photos").document(photo.id).set(photo)
+                firestore.collection("users").document(user.uid).collection("items").document(selectedItem.itemID).collection("photos").document(photo.id).set(photo)
             }
             handle.addOnFailureListener {
                 Log.e(ContentValues.TAG, "Error updating photo data: ${it.message}")
@@ -190,9 +190,9 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
                 user ->
             val document =
                 if (selectedItem.itemID == null || selectedItem.itemID.isEmpty()) {
-                    firestore.collection("users").document(user.uid).collection("specimens").document()
+                    firestore.collection("users").document(user.uid).collection("items").document()
                 } else {
-                    firestore.collection("users").document(user.uid).collection("specimens").document(selectedItem.itemID)
+                    firestore.collection("users").document(user.uid).collection("items").document(selectedItem.itemID)
                 }
             selectedItem.itemID = document.id
             val handle = document.set(selectedItem)
