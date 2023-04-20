@@ -3,7 +3,7 @@
 
 ### Design Document  
 
-Tony Gentile, Ryan Durham, Logan Arnett, Justin Tracy, Nathan Kraft
+Tony Gentile, Ryan Durham, Logan Arnett, Justin Tracy
 
 ## Introduction 
 
