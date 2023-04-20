@@ -26,8 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -96,6 +98,9 @@ class MainActivity : ComponentActivity() {
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W700,
                     modifier = Modifier.padding(2.dp),
+                    style = TextStyle(textDecoration = if(item.purchased)
+                        TextDecoration.LineThrough
+                    else TextDecoration.None)
                 )
                 Text(text = "Qty: ${item.quantity}", modifier = Modifier.padding(2.dp)) //Quantity
 
