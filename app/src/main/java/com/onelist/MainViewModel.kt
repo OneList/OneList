@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.storage.FirebaseStorage
 import com.onelist.dto.*
 import com.onelist.service.IItemService
 import com.onelist.service.ItemService
@@ -23,13 +24,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel() {
 
+    val photos: ArrayList<Photo> by mutableStateOf(ArrayList<Photo>())
     var items : MutableLiveData<List<Item>> = MutableLiveData<List<Item>>()
     var selectedItem by mutableStateOf(Item())
     var shoppingLists : MutableLiveData<List<ShoppingList>> = MutableLiveData<List<ShoppingList>>()
     var userService : UserService = UserService()
     var user: User? = null
 
-    private var firestore : FirebaseFirestore = FirebaseFirestore.getInstance()
+    private lateinit var firestore : FirebaseFirestore
+    private var storageReference = FirebaseStorage.getInstance().getReference()
 
 
     init {
@@ -144,7 +147,61 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
         return Pair(true, 0)
     }
 
+    private fun uploadPhotos() {
+        photos.forEach {
+                photo ->
+            var uri = Uri.parse(photo.localUri)
+            val imageRef = storageReference.child("images/${user?.uid}/${uri.lastPathSegment}")
+            val uploadTask = imageRef.putFile(uri)
+            uploadTask.addOnSuccessListener {
+                Log.i(ContentValues.TAG, "Image uploaded")
+                val downloadUrl = imageRef.downloadUrl
+                downloadUrl.addOnSuccessListener {
+                        remoteUri ->
+                    photo.remoteUri = remoteUri.toString()
+                    updatePhotoDatabase(photo)
+                }
+            }
+            uploadTask.addOnFailureListener {
+                Log.e(ContentValues.TAG, it.message ?: "No Message")
+            }
+        }
+    }
 
+    private fun updatePhotoDatabase(photo: Photo) {
+        user?.let {
+                user ->
+            var photoCollection = firestore.collection("users").document(user.uid).collection("specimens").document(selectedItem.itemID).collection("photos")
+            var handle = photoCollection.add(photo)
+            handle.addOnSuccessListener {
+                Log.i(ContentValues.TAG, "Successfully updated photo metadata")
+                photo.id = it.id
+                firestore.collection("users").document(user.uid).collection("specimens").document(selectedItem.itemID).collection("photos").document(photo.id).set(photo)
+            }
+            handle.addOnFailureListener {
+                Log.e(ContentValues.TAG, "Error updating photo data: ${it.message}")
+            }
+        }
+    }
 
-
+    fun save() {
+        user?.let {
+                user ->
+            val document =
+                if (selectedItem.itemID == null || selectedItem.itemID.isEmpty()) {
+                    firestore.collection("users").document(user.uid).collection("specimens").document()
+                } else {
+                    firestore.collection("users").document(user.uid).collection("specimens").document(selectedItem.itemID)
+                }
+            selectedItem.itemID = document.id
+            val handle = document.set(selectedItem)
+            handle.addOnSuccessListener {
+                Log.d("Firebase", "Document saved")
+                if (photos.isNotEmpty()) {
+                    uploadPhotos()
+                }
+            }
+            handle.addOnFailureListener { Log.e("FIrebase", "Save failed $it") }
+        }
+    }
 }

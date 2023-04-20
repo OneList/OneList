@@ -9,13 +9,13 @@ package com.onelist.dto
  * @property email the email address of the user
  * @constructor Creates a user with ID, first name, last name, and email
  */
-data class User(var userID: String, var firstName: String) {
+data class User(val uid: String = "", var userID: String) {
 
     fun getLists(): List<ShoppingList> {
         return emptyList()
     }
 
     override fun toString(): String {
-        return "$userID - $firstName"
+        return "$userID"
     }
 }
