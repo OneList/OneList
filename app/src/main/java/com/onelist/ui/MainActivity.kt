@@ -255,7 +255,7 @@ class MainActivity : ComponentActivity() {
                     OutlinedTextField(
                         value = itemName,
                         onValueChange = { itemName = it },
-                        label = { Text(stringResource(R.string.ItemName)) },
+                        label = { Text(stringResource(R.string.item_name)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                     OutlinedTextField(

@@ -36,7 +36,6 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
 
 
     init {
-        firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
         listenToItems()
     }
