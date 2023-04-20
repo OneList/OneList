@@ -1,7 +1,6 @@
 package com.onelist.ui
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -25,6 +24,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -131,6 +131,13 @@ class MainActivity : ComponentActivity() {
                         }
                     ){
                         Text(text = stringResource(R.string.delete))
+                    }
+                    DropdownMenuItem(
+                        onClick = {
+                            //TODO: Add image capture
+                        }
+                    ){
+                        Text(text = stringResource(R.string.add_image))
                     }
                 }
             }
@@ -350,8 +357,6 @@ class MainActivity : ComponentActivity() {
 
     )
 
-    private val previewItem = Item("123", "Apple", listOf("1"), 3, false )
-
     //Previews
     @Preview(showBackground = true, name = "test", device = "spec:width=411dp,height=891dp", showSystemUi = true)
     @Composable
@@ -407,7 +412,6 @@ class MainActivity : ComponentActivity() {
                 FileProvider.getUriForFile(this, "com.onelist.fileprovider", file)
         } catch (e: Exception) {
             Log.e(TAG, "Error: ${e.message}")
-            var foo = e.message
         }
         cameraLauncher.launch(uri)
     }

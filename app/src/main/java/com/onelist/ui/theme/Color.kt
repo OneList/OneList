@@ -16,6 +16,7 @@ val MainGreen = Color(0xFF488E3E) //Primary Color
 val LightGreen = Color(0xFF95CD8E) //Secondary Color
 val Snow = Color(0xFFF9F3F1) //Background Color
 val Rose = Color(0xFFFE5F55) //Accent Color
+val DarkRose = Color(0xFFba4038) //Darker Accent Color
 
 //Custom Dark Mode Colors
 val JetBlack = Color(0xFF21262D) //Primary Color
