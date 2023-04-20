@@ -29,11 +29,10 @@ class MainViewModel(var itemService: IItemService = ItemService()) : ViewModel()
     var userService : UserService = UserService()
     var user: User? = null
 
-    private lateinit var firestore : FirebaseFirestore
+    private var firestore : FirebaseFirestore = FirebaseFirestore.getInstance()
 
 
     init {
-        firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
         listenToItems()
     }
