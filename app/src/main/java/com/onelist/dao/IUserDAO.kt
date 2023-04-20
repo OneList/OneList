@@ -1,8 +1,11 @@
 package com.onelist.dao
 
+import com.onelist.dto.User
+
 interface IUserDAO {
-    var firstname: String;
-    var lastName: String;
-    var email: String;
-    fun getLists();
+    fun addUser(user: User): User
+    fun getUser(userId: String): User?
+    fun updateUser(user: User): User
+    fun deleteUser(userId: String): Boolean
+    fun getAllUsers(): List<User>
 }
