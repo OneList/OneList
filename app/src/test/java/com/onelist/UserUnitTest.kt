@@ -9,6 +9,6 @@ class UserUnitTest {
     @Test
     fun userToString() {
         val user = User("1", "John")
-        assertEquals("1 - John", user.toString())
+        assertEquals("John", user.toString())
     }
 }
