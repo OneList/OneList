@@ -1,7 +1,6 @@
 package com.onelist.ui
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -42,8 +41,16 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import com.onelist.dto.User
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 
 class MainActivity : ComponentActivity() {
+
+    private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
     private var uri: Uri? = null
     private lateinit var currentImagePath: String
@@ -295,7 +302,9 @@ class MainActivity : ComponentActivity() {
                     contentColor = MaterialTheme.colors.onPrimary,
                     elevation = 0.dp,
                     actions = {
-                        IconButton(onClick = {/* Do Something*/ }) {
+                        IconButton(onClick = {
+                            signIn()
+                        }) {
                             Icon(Icons.Filled.Settings, null, tint = MaterialTheme.colors.onPrimary)
                         }
                     }
@@ -415,7 +424,7 @@ class MainActivity : ComponentActivity() {
     private fun createImageFile() : File {
         val timestamp = SimpleDateFormat("yyyMMdd_HHmmss").format(Date())
         val imageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("Specimen_$timestamp", ".jpg",
+        return File.createTempFile("Item_$timestamp", ".jpg",
             imageDirectory).apply {
             currentImagePath = absolutePath
         }
@@ -432,4 +441,45 @@ class MainActivity : ComponentActivity() {
 
     fun hasCameraPermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
     fun hasExternalStoragePermission() = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+    private fun signIn() {
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build()
+        )
+        val signinIntent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .build()
+
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            signInLauncher.launch(signinIntent)
+        } else {
+            // User is already signed in
+        }
+    }
+
+    private val signInLauncher = registerForActivityResult (
+        FirebaseAuthUIActivityResultContract()
+    ) { result ->
+        signInResult(result)
+    }
+
+
+    private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
+        val response = result.idpResponse
+        if (result.resultCode == RESULT_OK) {
+            firebaseUser = FirebaseAuth.getInstance().currentUser
+            firebaseUser?.let {
+                val user = User(it.uid, it.displayName!!)
+                viewModel.user = user
+                viewModel.saveUser(user)
+            }
+        } else {
+            val error = response?.error?.errorCode ?: "unknown error"
+            Log.e("MainActivity.kt", "Error logging in: $error")
+        }
+    }
+
+
 }
