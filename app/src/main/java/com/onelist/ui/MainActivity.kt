@@ -24,6 +24,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -130,6 +131,13 @@ class MainActivity : ComponentActivity() {
                         }
                     ){
                         Text(text = stringResource(R.string.delete))
+                    }
+                    DropdownMenuItem(
+                        onClick = {
+                            //TODO: Add image capture
+                        }
+                    ){
+                        Text(text = stringResource(R.string.add_image))
                     }
                 }
             }
